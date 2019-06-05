@@ -1,22 +1,67 @@
 <template>
-  <div>
-    <top/>
-    <nuxt/>
+  <div style="width: 100%; height: 100%; position: absolute; ">
+    <el-container>
+      <el-header>
+
+      </el-header>
+      <el-container>
+        <left/>
+        <el-main>
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">套房信息</el-breadcrumb-item>
+            <el-breadcrumb-item>采购管理</el-breadcrumb-item>
+            <el-breadcrumb-item>待采购</el-breadcrumb-item>
+          </el-breadcrumb>
+          <nuxt/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 
 <script>
-  import Top from '~/components/Top.vue'
+
+  import Left from '~/components/Left.vue'
 
   export default {
     components: {
-      Top
+      Left
+    }, methods: {
+      collapseStatus() {
+        this.collapseBtnClick = this.isCollapse;
+        this.isCollapse = !this.isCollapse;
+      }
     }
   }
 </script>
 
 <style>
+
+  .el-header {
+    background-color: #F56C6C;
+    color: #333;
+    line-height: 80px;
+  }
+
+  .el-main {
+    height: 100%;
+    width: auto;
+    position: relative;
+  }
+
+  .el-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    border: 1px solid #eee;
+  }
+
+  .el-container:nth-child(5) .el-aside,
+  .el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+  }
+
   html {
     font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
