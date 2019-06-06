@@ -67,7 +67,8 @@
           platformName: '',
           comment: '',
           type: ''
-        }
+        },
+        id: 4
       }
     },
 
@@ -80,6 +81,8 @@
           message: '恭喜你，这是一条成功消息',
           type: 'success'
         });
+        this.showData = this.showData.concat([{"id": this.id, "type": "线上", "platformName": "途家" + this.id, 'comment': "this is desc"}]);
+        this.id++;
         return this.dialogFormVisible;
       },
       handleSelectionChange(val) {
