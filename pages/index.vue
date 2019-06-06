@@ -52,9 +52,9 @@
                          :label="item.title"
                          :span-method="arraySpanMethod">
           <template scope="scope">
-            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-text="scope.row[item.field]" class="check-in-info">
+            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field]" class="check-in-info">
             </div>
-            <div v-else-if="item.field === 'type'" v-text="scope.row[item.field]"></div>
+            <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]"></div>
             <div v-else @click="dialogTableVisible = true" v-text=" "></div>
 
           </template>
@@ -122,14 +122,14 @@
         tableHeight: 0,
         dialogTableVisible: false,
         showData: [
-          {"type": "6-2801 三室一厅", "time1": "赵伟", "time4": "赵伟", "time2": "赵伟", "time7": "赵伟", "time8": "赵伟"},
-          {"type": "6-2802 两室一厅", "time1": "李伟",},
-          {"type": "6-2803 两室一厅", "time5": "吴伟"},
-          {"type": "6-2804 一室一厅", "time1": "张三", "colspan": 3},
-          {"type": "6-2805 一室一厅", "time7": "李四", "colspan": 3},
-          {"type": "6-2806 一室一厅", "time3": "王五", "colspan": 3},
-          {"type": "6-2807 一室一厅", "time4": "路六", "colspan": 3},
-          {"type": "6-2808 一室一厅", "time2": "周伟", "colspan": 3}
+          {"type": "6-2801 三室一厅", "time1": "赵伟<br/> 携程<br/> 离店", "time4": "赵伟<br/> 携程<br/> 已入住", "time2": "赵伟<br/> 携程", "time7": "赵伟<br/> 携程", "time8": "赵伟<br/> 携程"},
+          {"type": "6-2802 两室一厅", "time1": "李伟<br/> 飞猪<br/> 离店",},
+          {"type": "6-2803 两室一厅", "time5": "吴伟<br/> 途家<br/> 已入住"},
+          {"type": "6-2804 一室一厅", "time1": "张三<br/> 三更宿（线下）<br/> 离店", "colspan": 3},
+          {"type": "6-2805 一室一厅", "time7": "李四<br/> 西西里（线下）<br/> 已入住", "colspan": 3},
+          {"type": "6-2806 一室一厅", "time3": "王五<br/> 携程<br/> 已入住", "colspan": 3},
+          {"type": "6-2807 一室一厅", "time4": "路六<br/> 携程<br/> 已入住", "colspan": 3},
+          {"type": "6-2808 一室一厅", "time2": "周伟<br/> 携程<br/> 已入住", "colspan": 3}
         ],
         columns: [
           {field: 'time1', title: '05-01'},
