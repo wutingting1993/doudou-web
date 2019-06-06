@@ -34,14 +34,20 @@
           </template>
         </el-table-column>
       </el-table>
+      <div style="margin-top: 20px">
+        <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>
+        <el-button @click="toggleSelection()">取消选择</el-button>
+      </div>
     </div>
 
-
-    <el-dialog title="房间信息" :visible.sync="dialogTableVisible">
-      <el-table title="房间信息">
-
-      </el-table>
-    </el-dialog>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :hide-on-single-page="true"
+      :total="totalCount"
+      :current-page="currentPage"
+      :page-size="pageSize">
+    </el-pagination>
   </div>
 </template>
 
@@ -49,6 +55,9 @@
   export default {
     data() {
       return {
+        currentPage: 4,
+        pageSize: 2,
+        totalCount: 100,
         tableHeight: 0,
         dialogTableVisible: false,
         tableData: [
@@ -75,7 +84,7 @@
     },
 
     mounted() {
-      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 50;
+      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 250;
     },
     methods: {
       tableRowClassName({row, rowIndex}) {
