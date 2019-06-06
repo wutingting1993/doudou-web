@@ -92,7 +92,7 @@
     },
 
     mounted() {
-      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
+      // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
       this.totalCount = this.columns.length;
       this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
     },
