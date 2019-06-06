@@ -13,28 +13,35 @@
     <!--<el-button type="danger" icon="el-icon-delete">删除</el-button>-->
     <!--</el-button-group>-->
     <div class="container">
-      <div style="align-items: center">
-        <el-table
-          :data="tableData"
-          border
-          style="width: 100%">
-          <el-table-column v-for="item in columns"
-                           :prop="item.field"
-                           :label="item.title"
-                           :span-method="arraySpanMethod">
-            <template scope="scope">
-              <el-button type="text" @click="dialogTableVisible = true" v-text="scope.row[item.field]"/>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-
-      <el-dialog title="房间信息" :visible.sync="dialogTableVisible">
-        <el-table title="房间信息">
-
-        </el-table>
-      </el-dialog>
+      <!--:header-cell-style=""-->
+      <el-table
+        :data="tableData"
+        ref="topictable"
+        :height="tableHeight"
+        border
+        :cell-class-name="tableColClassName"
+        class="dashboard-table"
+        @cell-click="dialogTableVisible = true">
+        <el-table-column v-for="item in columns"
+                         :prop="item.field"
+                         :label="item.title"
+                         :span-method="arraySpanMethod">
+          <template scope="scope">
+            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-text="scope.row[item.field]" class="check-in-info">
+            </div>
+            <div v-else-if="item.field === 'type'" v-text="scope.row[item.field]"></div>
+            <div v-else @click="dialogTableVisible = true" v-text=" "></div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+
+
+    <el-dialog title="房间信息" :visible.sync="dialogTableVisible">
+      <el-table title="房间信息">
+
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,138 +49,73 @@
   export default {
     data() {
       return {
-        gridData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
+        tableHeight: 0,
         dialogTableVisible: false,
         tableData: [
-          {"type": "6-2801 三室一厅", "time": "赵伟",},
-          {"type": "6-2802 两室一厅", "time": "李伟",},
+          {"type": "6-2801 三室一厅", "time1": "赵伟", "time4": "赵伟", "time2": "赵伟"},
+          {"type": "6-2802 两室一厅", "time1": "李伟",},
           {"type": "6-2803 两室一厅", "time5": "吴伟"},
-          {"type": "6-2804 一室一厅", "time": "周伟", "colspan": 3}
+          {"type": "6-2804 一室一厅", "time1": "张三", "colspan": 3},
+          {"type": "6-2805 一室一厅", "time7": "李四", "colspan": 3},
+          {"type": "6-2806 一室一厅", "time3": "王五", "colspan": 3},
+          {"type": "6-2807 一室一厅", "time4": "路六", "colspan": 3},
+          {"type": "6-2808 一室一厅", "time2": "周伟", "colspan": 3}
         ],
         columns: [
-          {field: 'type', title: '房型', titleAlign: 'center', columnAlign: 'left', isResize: true},
-          {field: 'time', title: '05-01', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time2', title: '05-02', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time3', title: '05-03', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time4', title: '05-04', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time5', title: '05-05', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time6', title: '05-06', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time7', title: '05-07', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true},
-          {field: 'time8', title: '05-08', titleAlign: 'center', columnAlign: 'center', isResize: true}
+          {field: 'type', title: '房型'},
+          {field: 'time1', title: '05-01'},
+          {field: 'time2', title: '05-02'},
+          {field: 'time3', title: '05-03'},
+          {field: 'time4', title: '05-04'},
+          {field: 'time5', title: '05-05'},
+          {field: 'time6', title: '05-06'},
+          {field: 'time7', title: '05-07'}
         ]
       }
     },
+
+    mounted() {
+      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 50;
+    },
     methods: {
       tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
+        if (rowIndex === 0) {
           return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
         }
         return '';
       },
-      arraySpanMethod({row, column, rowIndex, columnIndex}) {
-        var tableData = [
-          {"type": "6-2801 三室一厅", "time": "赵伟",},
-          {"type": "6-2802 两室一厅", "time": "李伟",},
-          {"type": "6-2803 两室一厅", "time5": "吴伟"},
-          {"type": "6-2804 一室一厅", "time": "周伟", "colspan": 3}
-        ]
-        var spanCols = [];
-        for (i in  tableData[rowIndex].colspan) {
-          spanCols[i] = [columnIndex++]
+      tableColClassName({row, column, rowIndex, columnIndex}) {
+        if (columnIndex !== 0 && row[column.property]) {
+          return 'success-cell';
         }
+      },
+      arraySpanMethod({row, column, rowIndex, columnIndex}) {
+        // var tableData = [
+        //   {"type": "6-2801 三室一厅", "time": "赵伟",},
+        //   {"type": "6-2802 两室一厅", "time": "李伟",},
+        //   {"type": "6-2803 两室一厅", "time5": "吴伟"},
+        //   {"type": "6-2804 一室一厅", "time": "周伟", "colspan": 3}
+        // ]
+        // var spanCols = [];
+        // for (i in  tableData[rowIndex].colspan) {
+        //   spanCols[i] = [columnIndex++]
+        // }
         return spanCols;
+      }, opCheckIn(row, column, cell, event) {
+        dialogTableVisible = true;
       }
     }
   }
-
 </script>
 
 <style>
-  /*.cell {*/
-  /*background-color: #F56C6C;*/
-  /*color: #333;*/
-  /*}*/
 
-  .container {
+  .dashboard-table {
+    width: 100%;
+    height: 100%;
+  }
+
+  div > .container {
     margin: 50px 50px 50px 50px;
     justify-content: center;
     align-items: left;
@@ -185,6 +127,14 @@
   }
 
   .el-table .success-row {
+    background: #f0f9eb;
+  }
+
+  .el-table .warning-cell {
+    background: oldlace;
+  }
+
+  .el-table .success-cell {
     background: #f0f9eb;
   }
 </style>

@@ -110,6 +110,7 @@
   .container {
     margin: 50px 50px 50px 50px;
     width: 80%;
+    height: 100%;
     justify-content: center;
     align-items: left;
     text-align: left;
