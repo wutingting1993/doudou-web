@@ -14,6 +14,31 @@
     <!--</el-button-group>-->
     <div class="container">
       <!--:header-cell-style=""-->
+      <div class="block" style="padding-bottom: 50px">
+        <el-row class="demo-autocomplete">
+          <span class="demonstration">入住人</span>
+          <el-autocomplete
+            class="inline-input"
+            v-model="state1"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect"
+          ></el-autocomplete>
+          <span class="demonstration">入住时间</span>
+          <el-date-picker
+            v-model="value2"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            clearable
+            :default-time="['00:00:00', '23:59:59']">
+          </el-date-picker>
+        </el-row>
+
+      </div>
       <el-table
         :data="showData"
         ref="topictable"
@@ -47,7 +72,8 @@
         :hide-on-single-page="true"
         :total="totalCount"
         :current-page="currentPage"
-        :page-size="pageSize">
+        :page-size="pageSize"
+        align="right">
       </el-pagination>
     </div>
   </div>
@@ -57,6 +83,39 @@
   export default {
     data() {
       return {
+
+        restaurants: [],
+        state1: '',
+        state2: '',
+        value1: '',
+        value2: '',
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
         currentPage: 1,
         pageSize: 7,
         totalCount: 100,
@@ -92,11 +151,37 @@
     },
 
     mounted() {
-      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
+      // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
       this.totalCount = this.columns.length;
       this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
+      this.restaurants = this.loadAll();
     },
     methods: {
+      querySearch(queryString, cb) {
+        var restaurants = this.restaurants;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (restaurant) => {
+          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      }, loadAll() {
+        return [
+          {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
+          {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
+          {"value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113"},
+          {"value": "泷千家(天山西路店)", "address": "天山西路438号"},
+          {"value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101"},
+          {"value": "贡茶", "address": "上海市长宁区金钟路633号"},
+          {"value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号"},
+          {"value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号"}
+        ];
+      },
+      handleSelect(item) {
+        console.log(item);
+      },
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 0) {
           return 'warning-row';
