@@ -31,9 +31,16 @@
             </div>
             <div v-else-if="item.field === 'type'" v-text="scope.row[item.field]"></div>
             <div v-else @click="dialogTableVisible = true" v-text=" "></div>
+
           </template>
         </el-table-column>
       </el-table>
+
+      <el-dialog title="房间信息" :visible.sync="dialogTableVisible">
+        <el-table title="房间信息">
+
+        </el-table>
+      </el-dialog>
       <el-pagination
         background
         layout="prev, pager, next"
