@@ -15,14 +15,14 @@
     <div class="container">
       <!--:header-cell-style=""-->
       <el-table
-        :data="tableData"
+        :data="showData"
         ref="topictable"
         :height="tableHeight"
         border
         :cell-class-name="tableColClassName"
         class="dashboard-table"
         @cell-click="dialogTableVisible = true">
-        <el-table-column v-for="item in columns"
+        <el-table-column v-for="item in showColumns"
                          :prop="item.field"
                          :label="item.title"
                          :span-method="arraySpanMethod">
@@ -50,13 +50,13 @@
   export default {
     data() {
       return {
-        currentPage: 4,
-        pageSize: 2,
+        currentPage: 1,
+        pageSize: 7,
         totalCount: 100,
         tableHeight: 0,
         dialogTableVisible: false,
-        tableData: [
-          {"type": "6-2801 三室一厅", "time1": "赵伟", "time4": "赵伟", "time2": "赵伟"},
+        showData: [
+          {"type": "6-2801 三室一厅", "time1": "赵伟", "time4": "赵伟", "time2": "赵伟", "time7": "赵伟", "time8": "赵伟"},
           {"type": "6-2802 两室一厅", "time1": "李伟",},
           {"type": "6-2803 两室一厅", "time5": "吴伟"},
           {"type": "6-2804 一室一厅", "time1": "张三", "colspan": 3},
@@ -66,20 +66,28 @@
           {"type": "6-2808 一室一厅", "time2": "周伟", "colspan": 3}
         ],
         columns: [
-          {field: 'type', title: '房型'},
           {field: 'time1', title: '05-01'},
           {field: 'time2', title: '05-02'},
           {field: 'time3', title: '05-03'},
           {field: 'time4', title: '05-04'},
           {field: 'time5', title: '05-05'},
           {field: 'time6', title: '05-06'},
-          {field: 'time7', title: '05-07'}
-        ]
+          {field: 'time7', title: '05-07'},
+          {field: 'time8', title: '05-08'},
+          {field: 'time9', title: '05-09'},
+          {field: 'time10', title: '05-10'},
+          {field: 'time11', title: '05-11'},
+          {field: 'time12', title: '05-12'},
+          {field: 'time13', title: '05-13'}
+        ],
+        showColumns: []
       }
     },
 
     mounted() {
-      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 250;
+      this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
+      this.totalCount = this.columns.length;
+      this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
     },
     methods: {
       tableRowClassName({row, rowIndex}) {
