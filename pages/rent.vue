@@ -13,6 +13,7 @@
         ref="platformTable"
         border
         :span-method="arraySpanMethod"
+        :cell-class-name="payStatus"
         @selection-change="handleSelectionChange">
         <el-table-column type="selection"/>
         <el-table-column v-for="item in columns"
@@ -87,6 +88,7 @@
             },
             'deposit': '7000',
             'payWay': '季度',
+            'payStatus': '未支付',
             'rowspan': 2 // rowspan 2：表示合并下方的1行，共合并2行
           }, {
             "roomNo": "6-2802",
@@ -102,6 +104,7 @@
             },
             'deposit': '7000',
             'payWay': '季度',
+            'payStatus': '未支付',
             "rowspan": 0 // rowspan 0：表示已被上面的行合并，该单元格不显示
           },
           {
@@ -118,6 +121,7 @@
             },
             'deposit': '8000',
             'payWay': '半年',
+            'payStatus': '已支付',
             "rowspan": 1 // rowspan 0：表示已被上面的行合并，该单元格不显示
           }
         ],
@@ -131,8 +135,9 @@
           {field: 'rentTime', title: '租期'},
           {field: 'price', title: '租金/月'},
           {field: 'deposit', title: '押金'},
-          {field: 'payWay', title: '支付方式'},
+          {field: 'payWay', title: '支付周期'},
           {field: 'payAccount', title: '账号详情'},
+          {field: 'payStatus', title: '支付状态'},
           {field: 'comment', title: '备注'}
         ],
         multipleSelection: [],
@@ -197,6 +202,16 @@
             message: '已取消删除'
           });
         });
+      }, payStatus({row, column, rowIndex, columnIndex}) {
+        if (columnIndex === 12 && row[column.property]) {
+          var status = row[column.property];
+          if (status === '已支付') {
+            return 'payed';
+          } else if (status === '未支付') {
+            return 'not-pay';
+          }
+          return 'not-need-pay';
+        }
       }
     }
   }
@@ -216,5 +231,17 @@
 
   .el-button-group {
     margin: 0 0 0 50px;
+  }
+
+  .payed {
+    color: green;
+  }
+
+  .not-need-pay {
+    color: #f0f9eb;
+  }
+
+  .not-pay {
+    color: red;
   }
 </style>
