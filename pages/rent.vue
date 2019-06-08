@@ -97,80 +97,47 @@
 </template>
 
 <script>
+  import {spanRow, payStatus, openDailog} from '../assets/js/rent';
+  import Axios from 'axios';
+  var appData = require('../mock/rent.json');
   export default {
     data() {
       return {
+        restaurants: [],
+        state1: '',
+        state2: '',
+        value1: '',
+        value2: '',
+        pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
         tableHeight: 0,
         dialogFormVisible: false,
-        showData: [
-          {
-            "roomNo": "6-2801",
-            "type": "一室一厅",
-            "owner": "张三",
-            "ownerPhone":
-              "18380446400",
-            "contact": "张三",
-            "contactPhone": "18380446400",
-            'comment': "this is desc",
-            'rentInfo': {
-              'rentTime': '2018-01-15<br>2019-01-06',
-              'price': '6000',
-            },
-            'deposit': '6000',
-            'payWay': '按月',
-            "rowspan": 1 // rowspan 1：表示不合并
-          },
-          {
-            "roomNo": "6-2802",
-            "type": "二室一厅",
-            "owner": "李四",
-            "ownerPhone": "18380446400",
-            "contact": "李四",
-            "contactPhone": "18380446400",
-            'comment': "this is desc",
-            'rentInfo': {
-              'rentTime': '2018-01-15<br>2019-01-06',
-              'price': '7000',
-            },
-            'deposit': '7000',
-            'payWay': '季度',
-            'payStatus': '未支付',
-            'rowspan': 2 // rowspan 2：表示合并下方的1行，共合并2行
-          }, {
-            "roomNo": "6-2802",
-            "type": "二室一厅",
-            "owner": "李四",
-            "ownerPhone": "18380446400",
-            "contact": "李四",
-            "contactPhone": "18380446400",
-            'comment': "this is desc",
-            'rentInfo': {
-              'rentTime': '2019-01-16<br>2020-01-06',
-              'price': '7500',
-            },
-            'deposit': '7000',
-            'payWay': '季度',
-            'payStatus': '未支付',
-            "rowspan": 0 // rowspan 0：表示已被上面的行合并，该单元格不显示
-          },
-          {
-            "roomNo": "6-2803",
-            "type": "三室一厅",
-            "owner": "王五",
-            "ownerPhone": "18380446400",
-            "contact": "王五",
-            "contactPhone": "18380446400",
-            'comment': "this is desc",
-            'rentInfo': {
-              'rentTime': '2018-01-15<br>2019-01-06',
-              'price': '8000',
-            },
-            'deposit': '8000',
-            'payWay': '半年',
-            'payStatus': '已支付',
-            "rowspan": 1 // rowspan 0：表示已被上面的行合并，该单元格不显示
-          }
-        ],
+        showData: [],
         columns: [
           {field: 'roomNo', title: '房号'},
           {field: 'type', title: '房型'},
@@ -197,26 +164,30 @@
     },
 
     mounted() {
+      this.getDatas();
     },
     methods: {
+      getDatas() {
+        Axios.get('/rent-data').then((response) => {
+          this.showData = appData;
+        }).catch((error) => {
+          this.showData = [];
+          console.log(error)
+        });
+      },
+      querySearch(queryString, cb) {
+        var restaurants = this.restaurants;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      }
+      ,
+      handleSelect(item) {
+        console.log(item);
+      }
+      ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
-        // 不合并的列的索引
-        let arr = ['rentTime', 'price'];
-        // 设置要合并的列
-        if (arr.indexOf(column.property) === -1) {
-          // 用于设置合并开始的行号，rowspan 不为 0，不是第一行时, 则该行需要向下合并
-          if (column.rowspan !== 0) {
-            return {
-              rowspan: row.rowspan, // 要合并的行数
-              colspan: 1
-            }
-          } else {
-            return {
-              rowspan: 0, // column.rowspan === 0 隐藏该单元格
-              colspan: 0
-            }
-          }
-        }
+        return spanRow(row, column, rowIndex, columnIndex, ['rentTime', 'price']);
       },
       success() {
         this.dialogFormVisible = false
@@ -230,33 +201,12 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
-      }, open() {
-        this.$confirm('删除平台, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      }, payStatus({row, column, rowIndex, columnIndex}) {
-        if (column.property === 'payStatus' && row[column.property]) {
-          var status = row[column.property];
-          if (status === '已支付') {
-            return 'payed';
-          } else if (status === '未支付') {
-            return 'not-pay';
-          }
-          return 'not-need-pay';
-        }
+      },
+      open() {
+        openDailog();
+      },
+      payStatus({row, column, rowIndex, columnIndex}) {
+        return payStatus(row, column);
       }
     }
   }
@@ -264,24 +214,5 @@
 
 <style>
   @import "../assets/css/default.css";
-
-  .el-button + .el-button {
-    margin-left: 0px;
-  }
-
-  .el-button-group {
-    margin: 0 0 0 50px;
-  }
-
-  .payed {
-    color: green;
-  }
-
-  .not-need-pay {
-    color: #f0f9eb;
-  }
-
-  .not-pay {
-    color: red;
-  }
+  @import "../assets/css/rent.css";
 </style>

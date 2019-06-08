@@ -1,0 +1,19 @@
+.el-button + .el-button {
+  margin-left: 0px;
+}
+
+.el-button-group {
+  margin: 0 0 0 50px;
+}
+
+.payed {
+  color: green;
+}
+
+.not-need-pay {
+  color: #f0f9eb;
+}
+
+.not-pay {
+  color: red;
+}
