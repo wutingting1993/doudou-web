@@ -44,15 +44,18 @@
         ref="topictable"
         :height="tableHeight"
         border
+        show-summary
+        :summary-method="getSummaries"
         :cell-class-name="tableColClassName"
         class="dashboard-table"
         @cell-click="dialogTableVisible = true">
         <el-table-column v-for="item in showColumns"
                          :prop="item.field"
                          :label="item.title"
-                         :span-method="arraySpanMethod">
+                         :span-method="arraySpanMethod"
+                         fixed="left">
           <template scope="scope">
-            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field]" class="check-in-info">
+            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field].value">
             </div>
             <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]"></div>
             <div v-else @click="dialogTableVisible = true" v-text=" "></div>
@@ -91,6 +94,8 @@
     },
     data() {
       return {
+        blocControlClass: "el-icon-caret-bottom",
+        blocControlText: '显示Chart',
         restaurants: [],
         state1: '',
         state2: '',
@@ -129,14 +134,68 @@
         tableHeight: 0,
         dialogTableVisible: false,
         showData: [
-          {"type": "6-2801 三室一厅", "time1": "赵伟<br/> 携程<br/> 离店", "time4": "赵伟<br/> 携程<br/> 已入住", "time2": "赵伟<br/> 携程", "time7": "赵伟<br/> 携程", "time8": "赵伟<br/> 携程"},
-          {"type": "6-2802 两室一厅", "time1": "李伟<br/> 飞猪<br/> 离店",},
-          {"type": "6-2803 两室一厅", "time5": "吴伟<br/> 途家<br/> 已入住"},
-          {"type": "6-2804 一室一厅", "time1": "张三<br/> 三更宿（线下）<br/> 离店", "colspan": 3},
-          {"type": "6-2805 一室一厅", "time7": "李四<br/> 西西里（线下）<br/> 已入住", "colspan": 3},
-          {"type": "6-2806 一室一厅", "time3": "王五<br/> 携程<br/> 已入住", "colspan": 3},
-          {"type": "6-2807 一室一厅", "time4": "路六<br/> 携程<br/> 已入住", "colspan": 3},
-          {"type": "6-2808 一室一厅", "time2": "周伟<br/> 携程<br/> 已入住", "colspan": 3}
+          {
+            "type": "6-2801 三室一厅", "time1": {
+              "value": "赵伟<br/> 携程<br/> 离店",
+              "status": 'leave'
+            }, "time2": {
+              "value": "赵伟<br/> 携程<br/> 离店",
+              "status": 'leave'
+            }, "time4": {
+              "value": "赵伟<br/> 携程<br/> 已入住",
+              "status": 'check-in'
+            }, "time7": {
+              "value": "赵伟<br/> 携程<br/> ",
+              "status": ''
+            }, "time8": {
+              "value": "赵伟<br/> 携程<br/> ",
+              "status": ''
+            }
+          },
+          {
+            "type": "6-2802 两室一厅", "time1": {
+              "value": "李伟<br/> 飞猪<br/> 离店",
+              "status": 'leave'
+            },
+          },
+          {
+            "type": "6-2803 两室一厅", "time4": {
+              "value": "吴伟<br/> 途家<br/> 已入住",
+              "status": 'check-in'
+            }, "time5": {
+              "value": "吴伟<br/> 途家<br/> 已入住",
+              "status": 'check-in'
+            }
+          },
+          {
+            "type": "6-2804 一室一厅", "time1": {
+              "value": "张三<br/> 三更宿<br/> 离店",
+              "status": 'leave'
+            }
+          },
+          {
+            "type": "6-2805 一室一厅", "time7": {
+              "value": "里斯<br/> 西西里<br/>",
+            }, "colspan": 3
+          },
+          {
+            "type": "6-2806 一室一厅", "time3": {
+              "value": "王五<br/> 携程<br/> 离店",
+              "status": 'leave'
+            }, "colspan": 3
+          },
+          {
+            "type": "6-2807 一室一厅", "time4": {
+              "value": "六六<br/> 携程<br/> 已入住",
+              "status": 'check-in'
+            }, "colspan": 3
+          },
+          {
+            "type": "6-2808 一室一厅", "time2": {
+              "value": "琪琪<br/> 携程<br/> 离店",
+              "status": 'leave'
+            }, "colspan": 3
+          }
         ],
         columns: [
           {field: 'time1', title: '05-01'},
@@ -153,27 +212,33 @@
           {field: 'time12', title: '05-12'},
           {field: 'time13', title: '05-13'}
         ],
-        showColumns: []
+        showColumns:
+          []
       }
-    },
+    }
+    ,
     mounted() {
       // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
       this.totalCount = this.columns.length;
       this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
       this.restaurants = this.loadAll();
-    },
+    }
+    ,
     methods: {
       querySearch(queryString, cb) {
         var restaurants = this.restaurants;
         var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
         // 调用 callback 返回建议列表的数据
         cb(results);
-      },
+      }
+      ,
       createFilter(queryString) {
         return (restaurant) => {
           return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         };
-      }, loadAll() {
+      }
+      ,
+      loadAll() {
         return [
           {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
           {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
@@ -184,21 +249,31 @@
           {"value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号"},
           {"value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号"}
         ];
-      },
+      }
+      ,
       handleSelect(item) {
         console.log(item);
-      },
+      }
+      ,
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 0) {
           return 'warning-row';
         }
         return '';
-      },
+      }
+      ,
       tableColClassName({row, column, rowIndex, columnIndex}) {
         if (columnIndex !== 0 && row[column.property]) {
-          return 'success-cell';
+          var status = this.showData[rowIndex][column.property].status;
+          if (status === 'leave') {
+            return 'leave-cell';
+          } else if (status === 'check-in') {
+            return 'check-in-cell';
+          }
+          return 'default-cell';
         }
-      },
+      }
+      ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
         // var tableData = [
         //   {"type": "6-2801 三室一厅", "time": "赵伟",},
@@ -210,15 +285,42 @@
         // for (i in  tableData[rowIndex].colspan) {
         //   spanCols[i] = [columnIndex++]
         // }
-        return spanCols;
-      }, opCheckIn(row, column, cell, event) {
+        return [4, 5];
+      }
+      ,
+      opCheckIn(row, column, cell, event) {
         dialogTableVisible = true;
+      }, getSummaries(param) {
+        const sums = []
+        this.showColumns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '总价';
+            return;
+          }
+          sums[index] = 1000 + index + ' 元';
+        });
+
+        return sums;
       }
     }
   }
 </script>
 
 <style>
+  .demo-block-control {
+    border-top: 1px solid #eaeefb;
+    height: 44px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    text-align: center;
+    margin-top: -1px;
+    color: #d3dce6;
+    cursor: pointer;
+    position: relative;
+  }
+
   .dashboard-table {
     width: 100%;
     height: 100%;
@@ -238,11 +340,15 @@
     background: #f0f9eb;
   }
 
-  .el-table .warning-cell {
+  .el-table .leave-cell {
     background: oldlace;
   }
 
-  .el-table .success-cell {
+  .el-table .default-cell {
     background: #f0f9eb;
+  }
+
+  .el-table .check-in-cell {
+    background: pink;
   }
 </style>

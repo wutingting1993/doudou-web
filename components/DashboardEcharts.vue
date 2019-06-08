@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="filter-charts">
+    <div class="filter-charts" h>
       <el-date-picker style="margin: 20px" v-model="date" value-format="yyyy-MM-dd" size="small" type="date" placeholder="选择日期"></el-date-picker>
-      <el-switch v-model="typeBoolean" active-color="#00B5FF" inactive-color="#7ED321" active-text="bar" inactive-text="line"></el-switch>
+      <el-radio-group v-model="radio" v-for="item in checkboxItems">
+        <el-radio :label="item"></el-radio>
+      </el-radio-group>
       <el-button style="margin-left: 50px; margin-bottom: 20px" type="primary" @click="handleSure">确定</el-button>
+      <el-switch v-model="typeBoolean" active-color="#00B5FF" inactive-color="#7ED321" active-text="bar" inactive-text="line"></el-switch>
     </div>
     <div class="monthChart">
       <dashboard-pie/>
@@ -22,6 +25,8 @@
     },
     data() {
       return {
+        checkboxItems: ['线上/线下', '莱恩/三更宿/西西里', '携程/飞猪/三更宿/西西里'],
+        radio: '莱恩/三更宿/西西里',
         myChartOne: null,
         dataAll: {
           online: [10, 15, 28, 12, 15, 10, 15, 28, 12, 15],
@@ -185,6 +190,11 @@
 <style scoped>
   .filter-charts {
     border: 1px solid rgba(155, 155, 155, 0.2)
+  }
+
+  .filter-charts .el-radio-group {
+    display: inline-block;
+    padding-left: 10px;
   }
 
   .monthChart {

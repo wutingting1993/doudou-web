@@ -1,8 +1,8 @@
 <template>
   <div class="charts">
-    <div id="monthly-pie" class="chart"></div>
-    <div id="weekly-pie" class="chart"></div>
     <div id="daily-pie" class="chart"></div>
+    <div id="weekly-pie" class="chart"></div>
+    <div id="monthly-pie" class="chart"></div>
   </div>
 </template>
 
@@ -32,7 +32,7 @@
     methods: {
       initCharts(title, pieChart) {
         var chart = echarts.init(document.getElementById(pieChart + '-pie'))
-        chart.setOption({
+        let option = {
           title: {
             text: title,
             x: 'center'
@@ -42,9 +42,21 @@
             formatter: "{a} <br/>{b} : {c} ({d}%)"
           },
           legend: {
-            // orient: 'vertical',
+            orient: 'vertical',
             left: 'right',
-            data: ['线上', '线下']
+            data: ['线上', '线下'],
+            formatter: function (name) {
+              let oa = option.series[0].data;
+              let total = 0;
+              oa.forEach((item, index) => {
+                total += item.value;
+              });
+              for (let i = 0; i < oa.length; i++) {
+                if (name === oa[i].name) {
+                  return name + '  ' + oa[i].value;
+                }
+              }
+            },
           },
           series: [
             {
@@ -66,7 +78,8 @@
             '#00acee',
             '#52cdd5'
           ]
-        });
+        };
+        chart.setOption(option);
         chart.showLoading();
         if (pieChart === 'daily') {
           this.dailyPieChart = chart;
