@@ -87,7 +87,12 @@
 
 <script>
   import DashboardEcharts from '~/components/DashboardEcharts'
+  import {pickerOptions} from '../assets/js/default';
+  import Axios from 'axios';
 
+  var rowData = require('../mock/indexRows.json');
+  var tableHeaders = require('../mock/indexHeaders.json');
+  var indexAutoComplate = require('../mock/indexAutoComplate.json');
   export default {
     components: {
       DashboardEcharts
@@ -101,132 +106,46 @@
         state2: '',
         value1: '',
         value2: '',
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
+        pickerOptions: {},
         currentPage: 1,
         pageSize: 7,
         totalCount: 100,
         tableHeight: 0,
         dialogTableVisible: false,
-        showData: [
-          {
-            "type": "6-2801 三室一厅", "time1": {
-              "value": "赵伟<br/> 携程<br/> 离店",
-              "status": 'leave',
-              "colSpan": 2
-            }, "time4": {
-              "value": "赵伟<br/> 携程<br/> 已入住",
-              "status": 'check-in'
-            }, "time7": {
-              "value": "赵伟<br/> 携程<br/> ",
-              "status": ''
-            }
-          },
-          {
-            "type": "6-2802 两室一厅", "time1": {
-              "value": "李伟<br/> 飞猪<br/> 离店",
-              "status": 'leave'
-            },
-          },
-          {
-            "type": "6-2803 两室一厅", "time4": {
-              "value": "吴伟<br/> 途家<br/> 已入住",
-              "status": 'check-in',
-              "colSpan": 2
-            }
-          },
-          {
-            "type": "6-2804 一室一厅", "time1": {
-              "value": "张三<br/> 三更宿<br/> 离店",
-              "status": 'leave'
-            }
-          },
-          {
-            "type": "6-2805 一室一厅", "time7": {
-              "value": "里斯<br/> 西西里<br/>",
-            }
-          },
-          {
-            "type": "6-2806 一室一厅", "time3": {
-              "value": "王五<br/> 携程<br/> 离店",
-              "status": 'leave'
-            }
-          },
-          {
-            "type": "6-2807 一室一厅", "time4": {
-              "value": "六六<br/> 携程<br/> 已入住",
-              "status": 'check-in'
-            }
-          },
-          {
-            "type": "6-2808 一室一厅", "time2": {
-              "value": "琪琪<br/> 携程<br/> 离店",
-              "status": 'leave'
-            }
-          },
-          {
-            "type": "6-2809 一室一厅"
-          },
-          {
-            "type": "6-2810 一室一厅"
-          },
-          {
-            "type": "6-2811 一室一厅"
-          }
-        ],
-        columns: [
-          {field: 'time1', title: '05-01'},
-          {field: 'time2', title: '05-02'},
-          {field: 'time3', title: '05-03'},
-          {field: 'time4', title: '05-04'},
-          {field: 'time5', title: '05-05'},
-          {field: 'time6', title: '05-06'},
-          {field: 'time7', title: '05-07'},
-          {field: 'time8', title: '05-08'},
-          {field: 'time9', title: '05-09'},
-          {field: 'time10', title: '05-10'},
-          {field: 'time11', title: '05-11'},
-          {field: 'time12', title: '05-12'},
-          {field: 'time13', title: '05-13'}
-        ],
-        showColumns:
-          []
+        showData: [],
+        columns: [],
+        showColumns: []
       }
     }
     ,
     mounted() {
       // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
+      this.getHeaders();
+      this.getRows();
+      this.pickerOptions = pickerOptions();
       this.totalCount = this.columns.length;
-      this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
       this.restaurants = this.loadAll();
     }
     ,
     methods: {
+      getRows() {
+        Axios.get('/row-data').then((response) => {
+          this.showData = rowData;
+        }).catch((error) => {
+          this.showData = [];
+          console.log(error)
+        });
+      },
+      getHeaders() {
+        Axios.get('/rent-header').then((response) => {
+          this.columns = tableHeaders;
+          this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
+        }).catch((error) => {
+          console.log(error)
+          this.columns = [];
+        });
+        console.log(this.columns)
+      },
       querySearch(queryString, cb) {
         var restaurants = this.restaurants;
         var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
@@ -241,16 +160,7 @@
       }
       ,
       loadAll() {
-        return [
-          {"value": "三全鲜食（北新泾店）", "address": "长宁区新渔路144号"},
-          {"value": "Hot honey 首尔炸鸡（仙霞路）", "address": "上海市长宁区淞虹路661号"},
-          {"value": "新旺角茶餐厅", "address": "上海市普陀区真北路988号创邑金沙谷6号楼113"},
-          {"value": "泷千家(天山西路店)", "address": "天山西路438号"},
-          {"value": "胖仙女纸杯蛋糕（上海凌空店）", "address": "上海市长宁区金钟路968号1幢18号楼一层商铺18-101"},
-          {"value": "贡茶", "address": "上海市长宁区金钟路633号"},
-          {"value": "豪大大香鸡排超级奶爸", "address": "上海市嘉定区曹安公路曹安路1685号"},
-          {"value": "茶芝兰（奶茶，手抓饼）", "address": "上海市普陀区同普路1435号"}
-        ];
+        return indexAutoComplate;
       }
       ,
       handleSelect(item) {
@@ -305,6 +215,7 @@
 
 <style>
   @import "../assets/css/default.css";
+
   .demo-block-control {
     border-top: 1px solid #eaeefb;
     height: 44px;

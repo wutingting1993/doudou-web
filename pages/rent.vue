@@ -98,8 +98,11 @@
 
 <script>
   import {spanRow, payStatus, openDailog} from '../assets/js/rent';
+  import {pickerOptions} from '../assets/js/default';
   import Axios from 'axios';
+
   var appData = require('../mock/rent.json');
+  var tableHeaders = require('../mock/rentTableHeaders.json')
   export default {
     data() {
       return {
@@ -108,50 +111,11 @@
         state2: '',
         value1: '',
         value2: '',
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
+        pickerOptions: {},
         tableHeight: 0,
         dialogFormVisible: false,
         showData: [],
-        columns: [
-          {field: 'roomNo', title: '房号'},
-          {field: 'type', title: '房型'},
-          {field: 'owner', title: '房东'},
-          {field: 'ownerPhone', title: '房东电话'},
-          {field: 'contact', title: '联系人'},
-          {field: 'contactPhone', title: '联系人电话'},
-          {field: 'rentTime', title: '租期'},
-          {field: 'price', title: '租金/月'},
-          {field: 'deposit', title: '押金'},
-          {field: 'payWay', title: '支付周期'},
-          {field: 'payStatus', title: '支付状态'},
-          {field: 'comment', title: '备注'}
-        ],
+        columns: [],
         multipleSelection: [],
         formLabelWidth: '120px',
         form: {
@@ -164,15 +128,25 @@
     },
 
     mounted() {
-      this.getDatas();
+      this.columns = this.getHeaders();
+      this.showData = this.getRows();
+      this.pickerOptions = pickerOptions();
     },
     methods: {
-      getDatas() {
+      getRows() {
         Axios.get('/rent-data').then((response) => {
           this.showData = appData;
         }).catch((error) => {
           this.showData = [];
           console.log(error)
+        });
+      },
+      getHeaders() {
+        Axios.get('/rent-header').then((response) => {
+          this.columns = tableHeaders;
+        }).catch((error) => {
+          console.log(error)
+          this.columns = [];
         });
       },
       querySearch(queryString, cb) {
