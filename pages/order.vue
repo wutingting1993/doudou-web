@@ -111,7 +111,6 @@
     margin: 50px 50px 50px 50px;
     width: 80%;
     justify-content: center;
-    align-items: left;
     text-align: left;
   }
 

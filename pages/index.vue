@@ -76,14 +76,21 @@
         align="right">
       </el-pagination>
     </div>
+    <div>
+      <dashboard-echarts/>
+    </div>
   </div>
 </template>
 
 <script>
+  import DashboardEcharts from '~/components/DashboardEcharts'
+
   export default {
+    components: {
+      DashboardEcharts
+    },
     data() {
       return {
-
         restaurants: [],
         state1: '',
         state2: '',
@@ -149,7 +156,6 @@
         showColumns: []
       }
     },
-
     mounted() {
       // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
       this.totalCount = this.columns.length;
@@ -221,7 +227,6 @@
   div > .container {
     margin: 50px 50px 50px 50px;
     justify-content: center;
-    align-items: left;
     text-align: left;
   }
 
