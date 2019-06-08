@@ -47,17 +47,17 @@
         show-summary
         :summary-method="getSummaries"
         :cell-class-name="tableColClassName"
+        :span-method="arraySpanMethod"
         class="dashboard-table"
         @cell-click="dialogTableVisible = true">
         <el-table-column v-for="item in showColumns"
                          :prop="item.field"
                          :label="item.title"
-                         :span-method="arraySpanMethod"
                          fixed="left">
           <template scope="scope">
             <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field].value">
             </div>
-            <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]"></div>
+            <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]" style="min-height: 59px"></div>
             <div v-else @click="dialogTableVisible = true" v-text=" "></div>
 
           </template>
@@ -137,17 +137,12 @@
           {
             "type": "6-2801 三室一厅", "time1": {
               "value": "赵伟<br/> 携程<br/> 离店",
-              "status": 'leave'
-            }, "time2": {
-              "value": "赵伟<br/> 携程<br/> 离店",
-              "status": 'leave'
+              "status": 'leave',
+              "colSpan": 2
             }, "time4": {
               "value": "赵伟<br/> 携程<br/> 已入住",
               "status": 'check-in'
             }, "time7": {
-              "value": "赵伟<br/> 携程<br/> ",
-              "status": ''
-            }, "time8": {
               "value": "赵伟<br/> 携程<br/> ",
               "status": ''
             }
@@ -161,10 +156,8 @@
           {
             "type": "6-2803 两室一厅", "time4": {
               "value": "吴伟<br/> 途家<br/> 已入住",
-              "status": 'check-in'
-            }, "time5": {
-              "value": "吴伟<br/> 途家<br/> 已入住",
-              "status": 'check-in'
+              "status": 'check-in',
+              "colSpan": 2
             }
           },
           {
@@ -176,25 +169,34 @@
           {
             "type": "6-2805 一室一厅", "time7": {
               "value": "里斯<br/> 西西里<br/>",
-            }, "colspan": 3
+            }
           },
           {
             "type": "6-2806 一室一厅", "time3": {
               "value": "王五<br/> 携程<br/> 离店",
               "status": 'leave'
-            }, "colspan": 3
+            }
           },
           {
             "type": "6-2807 一室一厅", "time4": {
               "value": "六六<br/> 携程<br/> 已入住",
               "status": 'check-in'
-            }, "colspan": 3
+            }
           },
           {
             "type": "6-2808 一室一厅", "time2": {
               "value": "琪琪<br/> 携程<br/> 离店",
               "status": 'leave'
-            }, "colspan": 3
+            }
+          },
+          {
+            "type": "6-2809 一室一厅"
+          },
+          {
+            "type": "6-2810 一室一厅"
+          },
+          {
+            "type": "6-2811 一室一厅"
           }
         ],
         columns: [
@@ -275,22 +277,17 @@
       }
       ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
-        // var tableData = [
-        //   {"type": "6-2801 三室一厅", "time": "赵伟",},
-        //   {"type": "6-2802 两室一厅", "time": "李伟",},
-        //   {"type": "6-2803 两室一厅", "time5": "吴伟"},
-        //   {"type": "6-2804 一室一厅", "time": "周伟", "colspan": 3}
-        // ]
-        // var spanCols = [];
-        // for (i in  tableData[rowIndex].colspan) {
-        //   spanCols[i] = [columnIndex++]
-        // }
-        return [4, 5];
-      }
-      ,
+        if (columnIndex !== 0 && row[column.property]) {
+          var spanCols = this.showData[rowIndex][column.property].colSpan;
+          if (spanCols > 1) {
+            return [1, spanCols];
+          }
+        }
+      },
       opCheckIn(row, column, cell, event) {
         dialogTableVisible = true;
-      }, getSummaries(param) {
+      },
+      getSummaries(param) {
         const sums = []
         this.showColumns.forEach((column, index) => {
           if (index === 0) {
