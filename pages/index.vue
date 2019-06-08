@@ -48,7 +48,7 @@
         :summary-method="getSummaries"
         :cell-class-name="tableColClassName"
         :span-method="arraySpanMethod"
-        class="dashboard-table"
+        class="default-table"
         @cell-click="dialogTableVisible = true">
         <el-table-column v-for="item in showColumns"
                          :prop="item.field"
@@ -304,6 +304,7 @@
 </script>
 
 <style>
+  @import "../assets/css/default.css";
   .demo-block-control {
     border-top: 1px solid #eaeefb;
     height: 44px;
@@ -316,36 +317,5 @@
     color: #d3dce6;
     cursor: pointer;
     position: relative;
-  }
-
-  .dashboard-table {
-    width: 100%;
-    height: 100%;
-  }
-
-  div > .container {
-    margin: 50px 50px 50px 50px;
-    justify-content: center;
-    text-align: left;
-  }
-
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
-
-  .el-table .leave-cell {
-    background: oldlace;
-  }
-
-  .el-table .default-cell {
-    background: #f0f9eb;
-  }
-
-  .el-table .check-in-cell {
-    background: pink;
   }
 </style>

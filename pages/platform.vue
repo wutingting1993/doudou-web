@@ -110,16 +110,7 @@
 </script>
 
 <style>
-  .dashboard-table {
-    width: 100%;
-    height: 100%;
-  }
-
-  div > .container {
-    margin: 50px 50px 50px 50px;
-    justify-content: center;
-    text-align: left;
-  }
+  @import "../assets/css/default.css";
 
   .el-button-group {
     margin: 0 0 0 50px;

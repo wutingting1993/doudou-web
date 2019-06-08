@@ -107,18 +107,5 @@
 </script>
 
 <style>
-  .container {
-    margin: 50px 50px 50px 50px;
-    width: 80%;
-    justify-content: center;
-    text-align: left;
-  }
-
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
+  @import "../assets/css/default.css";
 </style>
