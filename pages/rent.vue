@@ -72,7 +72,7 @@
         <room-owner-account-info-pop ref="account-dialog" :room-no="currentRoomNo"/>
         <room-configuration-detail-pop ref="room-dialog" :room-no="currentRoomNo"/>
         <add-room-pop ref="add-room-dialog"/>
-        <edit-room-pop ref="edit-room-dialog"/>
+        <add-room-pop ref="edit-room-dialog"/>
       </div>
     </div>
   </div>
@@ -83,7 +83,6 @@
   import RoomOwnerAccountInfoPop from '../components/RoomOwnerAccountInfoPop';
   import RoomConfigurationDetailPop from '../components/RoomConfigurationDetailPop';
   import AddRoomPop from '../components/AddRoomPop';
-  import EditRoomPop from '../components/EditRoomPop';
   import {openDialog, payStatus, spanRow} from '../assets/js/rent';
   import {pickerOptions} from '../assets/js/default';
   import Axios from 'axios';
@@ -94,8 +93,7 @@
     components: {
       RoomOwnerAccountInfoPop,
       RoomConfigurationDetailPop,
-      AddRoomPop,
-      EditRoomPop
+      AddRoomPop
     },
     data() {
       return {
