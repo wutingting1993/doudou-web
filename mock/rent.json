@@ -13,6 +13,7 @@
     },
     "deposit": "6000",
     "payWay": "按月",
+    "hasRoomConfs": true,
     "rowspan": 1
   },
   {
@@ -30,6 +31,7 @@
     "deposit": "7000",
     "payWay": "季度",
     "payStatus": "未支付",
+    "hasRoomConfs": true,
     "rowspan": 2
   },
   {
@@ -47,6 +49,7 @@
     "deposit": "7000",
     "payWay": "季度",
     "payStatus": "未支付",
+    "hasRoomConfs": true,
     "rowspan": 0
   },
   {
@@ -64,6 +67,7 @@
     "deposit": "8000",
     "payWay": "半年",
     "payStatus": "已支付",
+    "hasRoomConfs": false,
     "rowspan": 1
   },
   {
@@ -81,6 +85,7 @@
     "deposit": "9000",
     "payWay": "半年",
     "payStatus": "已支付",
+    "hasRoomConfs": false,
     "rowspan": 1
   }
 ]
