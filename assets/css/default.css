@@ -100,3 +100,21 @@ div > .container {
   width: 100%;
   height: 100%;
 }
+
+.green {
+  color: green;
+}
+
+.white {
+  color: #f0f9eb;
+}
+.block {
+  color: #000;
+}
+
+.red {
+  color: red;
+}
+.orangered {
+  color: orangered;
+}

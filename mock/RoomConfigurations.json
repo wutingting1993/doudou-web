@@ -1,0 +1,56 @@
+[
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0001",
+    "capitalName": "窗帘",
+    "price": 3000,
+    "num": 1,
+    "totalMoney": 3000,
+    "owner": "莱恩",
+    "status": "已安装",
+    "labels": [
+      "红色",
+      "主卧"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0003",
+    "capitalName": "窗帘",
+    "price": 3000,
+    "num": 1,
+    "totalMoney": 3000,
+    "owner": "莱恩",
+    "status": "未安装",
+    "labels": [
+      "黄色",
+      "次卧"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0004",
+    "capitalName": "边几",
+    "price": 5000,
+    "num": 1,
+    "totalMoney": 5000,
+    "owner": "房东",
+    "status": "已安装",
+    "labels": [
+      "黄色"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0005",
+    "capitalName": "筒灯",
+    "price": 20,
+    "num": 8,
+    "totalMoney": 160,
+    "owner": "房东",
+    "status": "安装中",
+    "labels": [
+      "黄色"
+    ]
+  }
+]

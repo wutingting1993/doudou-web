@@ -1,0 +1,34 @@
+[
+  {
+    "field": "capitalNo",
+    "title": "资产编号"
+  },
+  {
+    "field": "capitalName",
+    "title": "资产名称"
+  },
+  {
+    "field": "price",
+    "title": "单价"
+  },
+  {
+    "field": "num",
+    "title": "数量"
+  },
+  {
+    "field": "totalMoney",
+    "title": "总价"
+  },
+  {
+    "field": "owner",
+    "title": "属主"
+  },
+  {
+    "field": "status",
+    "title": "状态"
+  },
+  {
+    "field": "labels",
+    "title": "标签"
+  }
+]

@@ -1,75 +1,119 @@
 <template>
   <el-dialog :title="title" :visible.sync="accountDialogTableVisible">
-    <el-form :model="form">
-      <el-form-item label="银行名称" :label-width="formLabelWidth">
-        <el-select v-model="form.bankName" placeholder="请选择银行">
-          <el-option label="中国银行" value="中国银行"></el-option>
-          <el-option label="招商银行" value="招商银行"></el-option>
-          <el-option label="农商银行" value="农商银行"></el-option>
-          <el-option label="建设银行" value="建设银行"></el-option>
+    <div class="block" style="padding-bottom: 50px">
+      <el-row class="demo-autocomplete">
+        <span class="demonstration">名称</span>
+        <el-autocomplete size="small"
+                         class="inline-input small"
+                         placeholder="请输入名称"
+                         @select="handleSelect">
+        </el-autocomplete>
+        <span class="demonstration">属主</span>
+        <el-select placeholder="请选择属主" size="small">
+          <el-option label="莱恩" value="1"></el-option>
+          <el-option label="房东" value="2"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="支行名称" :label-width="formLabelWidth">
-        <el-input v-model="form.subBankName"></el-input>
-      </el-form-item>
-      <el-form-item label="银行账户" :label-width="formLabelWidth">
-        <el-input v-model="form.account" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="微信" :label-width="formLabelWidth">
-        <el-input v-model="form.weChat" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="支付宝" :label-width="formLabelWidth">
-        <el-input v-model="form.alipay" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="姓名" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="电话" :label-width="formLabelWidth">
-        <el-input v-model="form.telPhone" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="备注" :label-width="formLabelWidth">
-        <el-input v-model="form.comment" autocomplete="off"></el-input>
-      </el-form-item>
-    </el-form>
+        <span class="demonstration">状态</span>
+        <el-select placeholder="请选择状态" size="small">
+          <el-option label="已安装" value="1"></el-option>
+          <el-option label="未安装" value="2"></el-option>
+          <el-option label="已废弃" value="3"></el-option>
+        </el-select>
+        <span class="demonstration">标签</span>
+        <el-autocomplete size="small"
+                         class="inline-input"
+                         placeholder="请输入内容"
+                         @select="handleSelect">
+        </el-autocomplete>
+        <el-button type="primary" icon="el-icon-search" size="small">搜索</el-button>
+      </el-row>
+    </div>
+    <el-table
+      :data="showData"
+      ref="topictable"
+      border
+      show-summary
+      :cell-class-name="setUpStatus"
+      class="default-table">
+      <el-table-column v-for="item in columns"
+                       :prop="item.field"
+                       :label="item.title"
+                       fixed="left"
+                       :formatter='formatterLabels'>
+        <template scope="scope">
+          <div v-html="formatterLabels(scope.row, scope.column)"></div>
+        </template>
+
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :hide-on-single-page="true"
+      :total="totalCount"
+      :current-page="currentPage"
+      :page-size="pageSize"
+      align="right">
+    </el-pagination>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="editable = true" type="warning" class="el-icon-edit-outline">编 辑</el-button>
-      <el-button @click="editable = false" type="danger" class="el-icon-check">保存</el-button>
-      <el-button type="primary" @click="accountDialogTableVisible = false">关闭</el-button>
+      <el-button @click="close">关闭</el-button>
     </div>
   </el-dialog>
 </template>
 <script>
   import Axios from 'axios';
 
-  var appData = require('../mock/RoomOwnerAccountInfo.json');
+  import {setUpStatus} from '../assets/js/rent';
+
+  var appData = require('../mock/RoomConfigurations.json');
+  var tableHeaders = require('../mock/RoomConfigurationsHeaders.json');
   export default {
     data() {
       return {
         title: '房源配套',
         accountDialogTableVisible: false,
-        showData: [],
         formLabelWidth: '120px',
-        form: {
-          bankName: '',
-          subBankName: '',
-          account: '',
-          weChat: '',
-          alipay: '',
-          name: '',
-          telPhone: '',
-          comment: ''
-        }
+        totalCount: 0,
+        pageSize: 10,
+        currentPage: 1,
+        showData: [],
+        columns: []
       }
     },
-
     mounted() {
       this.title = this.roomNo + " " + this.title;
-      this.showData = this.getRows();
+      this.getHeaders();
+      this.getRows();
     },
     methods: {
+      setUpStatus({row, column, rowIndex, columnIndex}) {
+        return setUpStatus(row, column);
+      }
+      ,
+      handleSelect(item) {
+        console.log(item);
+      },
+      formatterLabels(row, col) {
+        if (col.property !== 'labels') {
+          return row[col.property];
+        }
+        var html = "";
+        row.labels.forEach(label => {
+          html += "<span class=\"el-tag el-tag--success el-tag--mini el-tag--light\">" + label + " </span>";
+        });
+
+        return html;
+      },
       getRows() {
         Axios.get('/rent-data').then((response) => {
-          this.form = appData;
+          this.showData = appData;
+          this.totalCount = this.showData.length;
+        }).catch((error) => {
+          console.log(error)
+        });
+      }, getHeaders() {
+        Axios.get('/rent-data').then((response) => {
+          this.columns = tableHeaders;
         }).catch((error) => {
           console.log(error)
         });
@@ -99,6 +143,7 @@
 </script>
 
 <style>
-  /*@import "../assets/css/default.css";*/
-  /*@import "../assets/css/rent.css";*/
+  .el-tag {
+    margin: 5px;
+  }
 </style>
