@@ -27,19 +27,19 @@ export function payStatus(row, column) {
   }
 }
 
-export function openDailog() {
-  this.$confirm('删除平台, 是否继续?', '提示', {
+export function openDialog(obj) {
+  obj.$confirm('删除平台, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
     center: true
   }).then(() => {
-    this.$message({
+    obj.$message({
       type: 'success',
       message: '删除成功!'
     });
   }).catch(() => {
-    this.$message({
+    obj.$message({
       type: 'info',
       message: '已取消删除'
     });

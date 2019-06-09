@@ -29,11 +29,11 @@
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>套房信息</span>
+          <span>房源管理</span>
         </template>
         <el-menu-item index="3">
           <a href="/rent">
-            <span slot="title">租赁管理</span>
+            <span slot="title">房源管理</span>
           </a>
         </el-menu-item>
         <el-menu-item index="4-3">资产管理</el-menu-item>
