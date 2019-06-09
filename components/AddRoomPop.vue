@@ -70,7 +70,7 @@
       <el-form-item v-else-if="form.payWay === '2'" label="支付宝" :label-width="formLabelWidth" prop="alipay">
         <el-input v-model="form.alipay" autocomplete="off"></el-input>
       </el-form-item>
-      <div v-else-if="form.payWay === '3'">
+      <div v-else-if="form.payWay === '1'">
         <el-form-item label="银行名称" :label-width="formLabelWidth" prop="bankName">
           <el-select v-model="form.bankName" placeholder="请选择支付银行">
             <el-option label="招商银行" value="1"></el-option>
