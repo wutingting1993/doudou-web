@@ -13,6 +13,7 @@
     },
     "deposit": "6000",
     "payWay": "按月",
+    "hasRoomConfs": true,
     "rowspan": 1
   },
   {
@@ -30,6 +31,7 @@
     "deposit": "7000",
     "payWay": "季度",
     "payStatus": "未支付",
+    "hasRoomConfs": true,
     "rowspan": 2
   },
   {
@@ -47,6 +49,7 @@
     "deposit": "7000",
     "payWay": "季度",
     "payStatus": "未支付",
+    "hasRoomConfs": true,
     "rowspan": 0
   },
   {
@@ -64,6 +67,7 @@
     "deposit": "8000",
     "payWay": "半年",
     "payStatus": "已支付",
+    "hasRoomConfs": false,
     "rowspan": 1
   },
   {
@@ -81,6 +85,43 @@
     "deposit": "9000",
     "payWay": "半年",
     "payStatus": "已支付",
+    "hasRoomConfs": false,
+    "rowspan": 1
+  },
+  {
+    "roomNo": "6-2804",
+    "type": "三室一厅",
+    "owner": "王五",
+    "ownerPhone": "18380446400",
+    "contact": "王6",
+    "contactPhone": "18380446400",
+    "comment": "this is desc",
+    "rentInfo": {
+      "rentTime": "2018-01-15<br>2019-01-06",
+      "price": "8000"
+    },
+    "deposit": "9000",
+    "payWay": "半年",
+    "payStatus": "已支付",
+    "hasRoomConfs": false,
+    "rowspan": 1
+  },
+  {
+    "roomNo": "6-2804",
+    "type": "三室一厅",
+    "owner": "王五",
+    "ownerPhone": "18380446400",
+    "contact": "王6",
+    "contactPhone": "18380446400",
+    "comment": "this is desc",
+    "rentInfo": {
+      "rentTime": "2018-01-15<br>2019-01-06",
+      "price": "8000"
+    },
+    "deposit": "9000",
+    "payWay": "半年",
+    "payStatus": "已支付",
+    "hasRoomConfs": false,
     "rowspan": 1
   }
 ]

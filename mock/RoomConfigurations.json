@@ -52,5 +52,57 @@
     "labels": [
       "黄色"
     ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0005",
+    "capitalName": "筒灯",
+    "price": 20,
+    "num": 8,
+    "totalMoney": 160,
+    "owner": "房东",
+    "status": "安装中",
+    "labels": [
+      "黄色"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0005",
+    "capitalName": "筒灯",
+    "price": 20,
+    "num": 8,
+    "totalMoney": 160,
+    "owner": "房东",
+    "status": "安装中",
+    "labels": [
+      "黄色"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0005",
+    "capitalName": "筒灯",
+    "price": 20,
+    "num": 8,
+    "totalMoney": 160,
+    "owner": "房东",
+    "status": "安装中",
+    "labels": [
+      "黄色"
+    ]
+  },
+  {
+    "roomNo": "6-2801",
+    "capitalNo": "0005",
+    "capitalName": "筒灯",
+    "price": 20,
+    "num": 8,
+    "totalMoney": 160,
+    "owner": "房东",
+    "status": "安装中",
+    "labels": [
+      "黄色"
+    ]
   }
 ]

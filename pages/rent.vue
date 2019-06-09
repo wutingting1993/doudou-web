@@ -63,14 +63,18 @@
               <el-button @click="openAccountDialog" type="text" size="small">
                 账户信息
               </el-button>
-              <el-button @click="openRoomDialog" type="text" size="small">
+              <el-button v-if="scope.row['hasRoomConfs']===true" @click="openRoomDialog" type="text" size="small">
                 房源配套
+              </el-button>
+              <el-button v-else @click="openSetRoomDialog" type="text" size="small">
+                设置配套
               </el-button>
             </template>
           </el-table-column>
         </el-table>
         <room-owner-account-info-pop ref="account-dialog" :room-no="currentRoomNo"/>
         <room-configuration-detail-pop ref="room-dialog" :room-no="currentRoomNo"/>
+        <set-room-configurations-pop ref="set-room-dialog" :room-no="currentRoomNo"/>
         <add-room-pop ref="add-room-dialog"/>
         <add-room-pop ref="edit-room-dialog"/>
       </div>
@@ -80,10 +84,11 @@
 </template>
 
 <script>
+  import {openDialog, payStatus, spanRow} from '../assets/js/rent';
   import RoomOwnerAccountInfoPop from '../components/RoomOwnerAccountInfoPop';
   import RoomConfigurationDetailPop from '../components/RoomConfigurationDetailPop';
   import AddRoomPop from '../components/AddRoomPop';
-  import {openDialog, payStatus, spanRow} from '../assets/js/rent';
+  import SetRoomConfigurationsPop from '../components/SetRoomConfigurationsPop';
   import {pickerOptions} from '../assets/js/default';
   import Axios from 'axios';
 
@@ -93,7 +98,8 @@
     components: {
       RoomOwnerAccountInfoPop,
       RoomConfigurationDetailPop,
-      AddRoomPop
+      AddRoomPop,
+      SetRoomConfigurationsPop
     },
     data() {
       return {
@@ -177,6 +183,8 @@
         this.$refs['add-room-dialog'].open();
       }, openEditRoomDialog() {
         this.$refs['edit-room-dialog'].open();
+      }, openSetRoomDialog() {
+        this.$refs['set-room-dialog'].open();
       }
     }
   }

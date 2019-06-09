@@ -104,73 +104,16 @@
 </template>
 <script>
   import {pickerOptions} from '../assets/js/default';
-
+  var ruleData = require('../rules/room-owner-account-rules');
+  var formField = require('../rules/room-owner-account-fields');
   export default {
     data() {
       return {
         pickerOptions: {},
         dialogFormVisible: false,
         formLabelWidth: '120px',
-        form: {
-          roomNo: '',
-          type: '',
-          owner: '',
-          ownerPhone: '',
-          contact: '',
-          contactPhone: '',
-          rentTime: '',
-          price: '',
-          deposit: '',
-          paymentCycle: '',
-          payWay: '',
-          bankName: '',
-          subBankName: '',
-          account: '',
-          weChat: '',
-          alipay: '',
-          name: '',
-          telPhone: '',
-          comment: '',
-        },
-        rules: {
-          roomNo: [
-            {required: true, message: '请输入房号', trigger: 'blur'},
-            {min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur'}
-          ],
-          type: [
-            {required: true, message: '请选择房型', trigger: 'change'}
-          ],
-          owner: [
-            {required: true, message: '请输入房东姓名', trigger: 'blur'}
-          ],
-          ownerPhone: [
-            {type: 'tel', required: true, message: '请输入房东电话', trigger: 'blur'}
-          ],
-          rentTime: [
-            {type: 'date', required: true, message: '请选择租期', trigger: 'blur'}
-          ],
-          price: [
-            {type: 'number', required: true, message: '请输入租金', trigger: 'blur'}
-          ],
-          deposit: [
-            {type: 'number', required: true, message: '请输入押金', trigger: 'blur'}
-          ],
-          payWay: [
-            {required: true, message: '请选择支付方式', trigger: 'change'}
-          ],
-          weChat: [
-            {required: true, message: '请输入微信号', trigger: 'blur'}
-          ],
-          alipay: [
-            {required: true, message: '请输入支付宝账号', trigger: 'blur'}
-          ],
-          bankName: [
-            {required: true, message: '请输入银行名称', trigger: 'blur'}
-          ],
-          account: [
-            {required: true, message: '请输入银行账号', trigger: 'blur'}
-          ]
-        }
+        form: formField,
+        rules: ruleData
       }
     },
 

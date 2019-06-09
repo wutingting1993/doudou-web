@@ -1,0 +1,21 @@
+{
+  "roomNo": "",
+  "type": "",
+  "owner": "",
+  "ownerPhone": "",
+  "contact": "",
+  "contactPhone": "",
+  "rentTime": "",
+  "price": "",
+  "deposit": "",
+  "paymentCycle": "",
+  "payWay": "",
+  "bankName": "",
+  "subBankName": "",
+  "account": "",
+  "weChat": "",
+  "alipay": "",
+  "name": "",
+  "telPhone": "",
+  "comment": ""
+}

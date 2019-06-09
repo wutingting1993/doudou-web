@@ -58,3 +58,14 @@ export function openDialog(obj) {
     });
   });
 }
+export function formatterLabels(row, col) {
+  if (col.property !== 'labels') {
+    return row[col.property];
+  }
+  var html = "";
+  row.labels.forEach(label => {
+    html += "<span class=\"el-tag el-tag--success el-tag--mini el-tag--light\">" + label + " </span>";
+  });
+
+  return html;
+}
