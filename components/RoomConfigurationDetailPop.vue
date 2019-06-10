@@ -9,12 +9,12 @@
                          @select="handleSelect">
         </el-autocomplete>
         <span class="demonstration">属主</span>
-        <el-select placeholder="请选择属主" size="small">
+        <el-select v-model="form.owner" placeholder="请选择属主" size="small">
           <el-option label="莱恩" value="1"></el-option>
           <el-option label="房东" value="2"></el-option>
         </el-select>
         <span class="demonstration">状态</span>
-        <el-select placeholder="请选择状态" size="small">
+        <el-select v-model="form.status" placeholder="请选择状态" size="small">
           <el-option label="已安装" value="1"></el-option>
           <el-option label="未安装" value="2"></el-option>
           <el-option label="已废弃" value="3"></el-option>
@@ -60,14 +60,15 @@
     </div>
   </el-dialog>
 </template>
-<script>
+<script lang="ts">
   import Axios from 'axios';
-
-  import {setUpStatus} from '../assets/js/rent';
+  import rentMixin from '@/mixins/rent';
+  import commonMixin from '@/mixins/common';
 
   var appData = require('../mock/RoomConfigurations.json');
   var tableHeaders = require('../mock/RoomConfigurationsHeaders.json');
   export default {
+    mixins: [rentMixin, commonMixin],
     data() {
       return {
         title: '房源配套',
@@ -77,7 +78,11 @@
         pageSize: 10,
         currentPage: 1,
         showData: [],
-        columns: []
+        columns: [],
+        form: {
+          owner: '',
+          status: ''
+        }
       }
     },
     mounted() {
@@ -86,24 +91,6 @@
       this.getRows();
     },
     methods: {
-      setUpStatus({row, column, rowIndex, columnIndex}) {
-        return setUpStatus(row, column);
-      }
-      ,
-      handleSelect(item) {
-        console.log(item);
-      },
-      formatterLabels(row, col) {
-        if (col.property !== 'labels') {
-          return row[col.property];
-        }
-        var html = "";
-        row.labels.forEach(label => {
-          html += "<span class=\"el-tag el-tag--success el-tag--mini el-tag--light\">" + label + " </span>";
-        });
-
-        return html;
-      },
       getRows() {
         Axios.get('/rent-data').then((response) => {
           this.showData = appData;

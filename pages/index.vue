@@ -86,13 +86,13 @@
 </template>
 
 <script>
-  import DashboardEcharts from '~/components/DashboardEcharts'
-  import {pickerOptions} from '../assets/js/default';
+  import DashboardEcharts from '@/components/DashboardEcharts'
+  import {pickerOptions} from '@/assets/js/default';
   import Axios from 'axios';
 
-  var rowData = require('../mock/indexRows.json');
-  var tableHeaders = require('../mock/indexHeaders.json');
-  var indexAutoComplate = require('../mock/indexAutoComplate.json');
+  var rowData = require('@/mock/indexRows.json');
+  var tableHeaders = require('@/mock/indexHeaders.json');
+  var indexAutoComplate = require('@/mock/indexAutoComplate.json');
   export default {
     components: {
       DashboardEcharts

@@ -26,19 +26,6 @@ export function payStatus(row, column) {
     return 'white';
   }
 }
-export function setUpStatus(row, column) {
-  if (column.property === 'status' && row[column.property]) {
-    var status = row[column.property];
-    if (status === '已安装') {
-      return 'green';
-    } else if (status === '未安装') {
-      return 'red';
-    } else if (status === '安装中') {
-      return 'orangered';
-    }
-    return 'white';
-  }
-}
 
 export function openDialog(obj) {
   obj.$confirm('删除平台, 是否继续?', '提示', {

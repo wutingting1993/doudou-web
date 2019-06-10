@@ -158,7 +158,6 @@
       }
       ,
       handleSelect(item) {
-        console.log(item);
       },
       getRows() {
         Axios.get('/rent-data').then((response) => {
