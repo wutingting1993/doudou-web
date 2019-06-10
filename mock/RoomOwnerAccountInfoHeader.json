@@ -1,0 +1,30 @@
+[
+  {
+    "field": "bankName",
+    "title": "银行名称"
+  },
+  {
+    "field": "subBankName",
+    "title": "支行名称"
+  },
+  {
+    "field": "account",
+    "title": "银行账号"
+  },
+  {
+    "field": "weChat",
+    "title": "微信"
+  },
+  {
+    "field": "alipay",
+    "title": "支付宝"
+  },
+  {
+    "field": "name",
+    "title": "姓名"
+  },
+  {
+    "field": "telPhone",
+    "title": "电话"
+  }
+]

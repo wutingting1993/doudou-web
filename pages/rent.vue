@@ -1,126 +1,196 @@
 <template>
   <div>
     <div class="container">
-      <el-button-group>
-        <el-button type="primary" icon="el-icon-edit"/>
-        <el-button type="primary" icon="el-icon-share"/>
-        <el-button type="danger" icon="el-icon-delete"/>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
-        <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-      </el-button-group>
-      <div style="align-items: center">
-        <el-table
-          :data="tableData"
-          style="width: 100%"
-          :row-class-name="tableRowClassName">
-          <el-table-column
-            prop="date"
-            label="房间号"
-            width="180">
+      <div class="block" style="padding-bottom: 50px">
+        <el-row class="demo-autocomplete">
+          <span class="demonstration">房东</span>
+          <el-autocomplete
+            class="inline-input"
+            v-model="state1"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+          <span class="demonstration">电话</span>
+          <el-autocomplete
+            class="inline-input"
+            v-model="state1"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+          <span class="demonstration">租期</span>
+          <el-date-picker
+            v-model="value2"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            clearable
+            :default-time="['00:00:00', '23:59:59']">
+          </el-date-picker>
+          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-button-group>
+            <el-button type="primary" icon="el-icon-plus" @click="openAddRoomDialog">新增</el-button>
+            <el-button type="warning" icon="el-icon-edit" @click="openEditRoomDialog">编辑</el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="openConfirmDialog">删除</el-button>
+          </el-button-group>
+        </el-row>
+      </div>
+      <div class="container">
+        <el-table :data="showData"
+                  ref="platformTable"
+                  border
+                  :span-method="arraySpanMethod"
+                  :cell-class-name="payStatus"
+                  @selection-change="handleSelectionChange">
+          <el-table-column type="selection"/>
+          <el-table-column v-for="item in columns"
+                           :prop="item.field"
+                           :label="item.title">
+            <template scope="scope">
+              <div v-if="item.field==='price' || item.field==='rentTime'" v-html="scope.row['rentInfo'][item.field]"></div>
+              <div v-else v-html="scope.row[item.field]" style="min-height: 59px"></div>
+            </template>
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="房型"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="订单号">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入住人">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入住时间">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="退房时间">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否续住">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="平台">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="平台金额">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入账金额">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否离店">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否打扫">
+            fixed="right"
+            label="操作"
+            width="120">
+            <template slot-scope="scope">
+              <el-button @click="openAccountDialog" type="text" size="small">
+                账户信息
+              </el-button>
+              <el-button v-if="scope.row['hasRoomConfs']===true" @click="openRoomDialog" type="text" size="small">
+                房源配套
+              </el-button>
+              <el-button v-else @click="openSetRoomDialog" type="text" size="small">
+                设置配套
+              </el-button>
+            </template>
           </el-table-column>
         </el-table>
+        <room-owner-account-info-pop ref="account-dialog" :room-no="currentRoomNo"/>
+        <room-configuration-detail-pop ref="room-dialog" :room-no="currentRoomNo"/>
+        <set-room-configurations-pop ref="set-room-dialog" :room-no="currentRoomNo"/>
+        <add-room-pop ref="add-room-dialog"/>
+        <add-room-pop ref="edit-room-dialog"/>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
+  import {openDialog, payStatus, spanRow} from '../assets/js/rent';
+  import RoomOwnerAccountInfoPop from '../components/RoomOwnerAccountInfoPop';
+  import RoomConfigurationDetailPop from '../components/RoomConfigurationDetailPop';
+  import AddRoomPop from '../components/AddRoomPop';
+  import SetRoomConfigurationsPop from '../components/SetRoomConfigurationsPop';
+  import {pickerOptions} from '../assets/js/default';
+  import Axios from 'axios';
 
+  var appData = require('../mock/rent.json');
+  var tableHeaders = require('../mock/rentTableHeaders.json')
   export default {
-    methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      }
+    components: {
+      RoomOwnerAccountInfoPop,
+      RoomConfigurationDetailPop,
+      AddRoomPop,
+      SetRoomConfigurationsPop
     },
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        currentRoomNo: '6-2801',
+        restaurants: [],
+        state1: '',
+        state2: '',
+        value1: '',
+        value2: '',
+        pickerOptions: {},
+        dialogFormVisible: false,
+        showData: [],
+        columns: [],
+        multipleSelection: [],
+        formLabelWidth: '120px',
+        form: {
+          platformName: '',
+          comment: '',
+          type: ''
+        }
+      }
+    },
+
+    mounted() {
+      this.columns = this.getHeaders();
+      this.showData = this.getRows();
+      this.pickerOptions = pickerOptions();
+    },
+    methods: {
+      getRows() {
+        Axios.get('/rent-data').then((response) => {
+          this.showData = appData;
+        }).catch((error) => {
+          this.showData = [];
+          console.log(error)
+        });
+      },
+      getHeaders() {
+        Axios.get('/rent-header').then((response) => {
+          this.columns = tableHeaders;
+        }).catch((error) => {
+          console.log(error)
+          this.columns = [];
+        });
+      },
+      querySearch(queryString, cb) {
+        var restaurants = this.restaurants;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      }
+      ,
+      handleSelect(item) {
+        console.log(item);
+      }
+      ,
+      arraySpanMethod({row, column, rowIndex, columnIndex}) {
+        return spanRow(row, column, rowIndex, columnIndex, ['rentTime', 'price']);
+      },
+      success() {
+        this.roomDialogTableVisible = false
+        this.$message({
+          message: '恭喜你，这是一条成功消息',
+          type: 'success'
+        });
+        return this.roomDialogTableVisible;
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      openConfirmDialog() {
+        openDialog(this);
+      },
+      payStatus({row, column, rowIndex, columnIndex}) {
+        return payStatus(row, column);
+      }, openAccountDialog() {
+        this.$refs['account-dialog'].open();
+      }, openRoomDialog() {
+        this.$refs['room-dialog'].open();
+      }, openAddRoomDialog() {
+        this.$refs['add-room-dialog'].open();
+      }, openEditRoomDialog() {
+        this.$refs['edit-room-dialog'].open();
+      }, openSetRoomDialog() {
+        this.$refs['set-room-dialog'].open();
       }
     }
   }
 </script>
 
 <style>
-  .container {
-    margin: 50px 50px 50px 50px;
-    width: 80%;
-    height: 100%;
-    justify-content: center;
-    align-items: left;
-    text-align: left;
-  }
-
-  .el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
+  @import "../assets/css/default.css";
+  @import "../assets/css/rent.css";
 </style>

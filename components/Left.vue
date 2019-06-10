@@ -13,27 +13,29 @@
       active-text-color="#ffd04b"
       class="el-menu-vertical-demo">
       <el-menu-item index="1">
-        <i class="el-icon-menu"></i>
-        <span slot="title">Dashboard</span>
+        <a href="/"><i class="el-icon-menu"></i>
+          <span slot="title">Dashboard</span></a>
       </el-menu-item>
       <el-menu-item index="2">
         <i class="el-icon-document"></i>
         <span slot="title">订单信息</span>
       </el-menu-item>
       <el-menu-item index="3">
-        <i class="el-icon-setting"></i>
-        <span slot="title">平台管理</span>
+        <a href="/platform">
+          <i class="el-icon-setting"></i>
+          <span slot="title">平台管理</span>
+        </a>
       </el-menu-item>
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>套房信息</span>
+          <span>房源管理</span>
         </template>
-        <el-submenu index="4-1">
-          <template slot="title">租金管理</template>
-          <el-menu-item index="4-1-1">选项1</el-menu-item>
-          <el-menu-item index="4-1-2">选项2</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="3">
+          <a href="/rent">
+            <span slot="title">房源管理</span>
+          </a>
+        </el-menu-item>
         <el-menu-item index="4-3">资产管理</el-menu-item>
         <el-submenu index="4-4">
           <template slot="title">采购管理</template>
@@ -90,5 +92,10 @@
     height: 100%;
     width: 250px;
     position: initial;
+  }
+
+  .el-menu-item a, .el-menu-item a:hover {
+    color: inherit;
+    text-decoration: none;
   }
 </style>
