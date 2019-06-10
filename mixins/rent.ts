@@ -28,7 +28,6 @@ export default {
       }
     },
     setUpStatus({row, column, rowIndex, columnIndex}) {
-      console.log(564654);
       if (column.property === 'status' && row[column.property]) {
         var status = row[column.property];
         if (status === '已安装') {

@@ -74,13 +74,15 @@
 </template>
 <script>
   import Axios from 'axios';
-  import {setUpStatus} from '../assets/js/rent';
+  import rentMixin from '@/mixins/rent';
+  import commonMixin from '@/mixins/common';
   import {pickerOptions} from '../assets/js/default';
 
   var appData = require('../mock/RoomConfigurations.json');
   var tableHeaders = require('../mock/RoomConfigurationsHeaders.json');
 
   export default {
+    mixins: [rentMixin, commonMixin],
     data() {
       return {
         title: '套房配置',
@@ -153,12 +155,6 @@
       this.pickerOptions = pickerOptions();
     },
     methods: {
-      setUpStatus({row, column, rowIndex, columnIndex}) {
-        return setUpStatus(row, column);
-      }
-      ,
-      handleSelect(item) {
-      },
       getRows() {
         Axios.get('/rent-data').then((response) => {
           this.showData = appData;
@@ -174,17 +170,6 @@
           console.log(error)
           this.columns = [];
         });
-      },
-      formatterLabels(row, col) {
-        if (col.property !== 'labels') {
-          return row[col.property];
-        }
-        var html = "";
-        row.labels.forEach(label => {
-          html += "<span class=\"el-tag el-tag--success el-tag--mini el-tag--light\">" + label + " </span>";
-        });
-
-        return html;
       },
       close() {
         this.dialogFormVisible = false;

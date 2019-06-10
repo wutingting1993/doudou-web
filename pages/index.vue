@@ -144,7 +144,6 @@
           console.log(error)
           this.columns = [];
         });
-        console.log(this.columns)
       },
       querySearch(queryString, cb) {
         var restaurants = this.restaurants;
@@ -193,9 +192,6 @@
             return [1, spanCols];
           }
         }
-      },
-      opCheckIn(row, column, cell, event) {
-        dialogTableVisible = true;
       },
       getSummaries(param) {
         const sums = []

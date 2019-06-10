@@ -152,10 +152,6 @@
         cb(results);
       }
       ,
-      handleSelect(item) {
-        console.log(item);
-      }
-      ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
         return spanRow(row, column, rowIndex, columnIndex, ['rentTime', 'price']);
       },
