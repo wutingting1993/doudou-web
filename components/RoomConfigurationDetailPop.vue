@@ -61,7 +61,7 @@
     </div>
   </el-dialog>
 </template>
-<script lang="ts">
+<script>
   import Axios from 'axios';
   import rentMixin from '../mixins/rent';
   import commonMixin from '../mixins/common';

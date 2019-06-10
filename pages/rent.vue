@@ -85,7 +85,6 @@
 </template>
 
 <script>
-  import {openDialog, payStatus, spanRow} from '../assets/js/rent';
   import RoomOwnerAccountInfoPop from '../components/RoomOwnerAccountInfoPop';
   import RoomConfigurationDetailPop from '../components/RoomConfigurationDetailPop';
   import AddRoomPop from '../components/AddRoomPop';
@@ -154,7 +153,20 @@
       }
       ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
-        return spanRow(row, column, rowIndex, columnIndex, ['rentTime', 'price']);
+        if (['rentTime', 'price'].indexOf(column.property) === -1) {
+          // 用于设置合并开始的行号，rowspan 不为 0，不是第一行时, 则该行需要向下合并
+          if (column.rowspan !== 0) {
+            return {
+              rowspan: row.rowspan, // 要合并的行数
+              colspan: 1
+            }
+          } else {
+            return {
+              rowspan: 0, // column.rowspan === 0 隐藏该单元格
+              colspan: 0
+            }
+          }
+        }
       },
       success() {
         this.roomDialogTableVisible = false
@@ -166,12 +178,6 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
-      },
-      openConfirmDialog() {
-        openDialog(this);
-      },
-      payStatus({row, column, rowIndex, columnIndex}) {
-        return payStatus(row, column);
       }, openAccountDialog() {
         this.$refs['account-dialog'].open();
       }, openRoomDialog() {
