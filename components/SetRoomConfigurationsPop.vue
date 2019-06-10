@@ -52,9 +52,10 @@
       <el-table-column v-for="item in columns"
                        :prop="item.field"
                        :label="item.title"
+                       v-bind:key="item.field"
                        fixed="left"
                        :formatter='formatterLabels'>
-        <template scope="scope">
+        <template slot-scope="scope">
           <div v-html="formatterLabels(scope.row, scope.column)"></div>
         </template>
 
@@ -74,9 +75,8 @@
 </template>
 <script>
   import Axios from 'axios';
-  import rentMixin from '@/mixins/rent';
-  import commonMixin from '@/mixins/common';
-  import {pickerOptions} from '../assets/js/default';
+  import rentMixin from '../mixins/rent';
+  import commonMixin from '../mixins/common';
 
   var appData = require('../mock/RoomConfigurations.json');
   var tableHeaders = require('../mock/RoomConfigurationsHeaders.json');
@@ -86,7 +86,6 @@
     data() {
       return {
         title: '套房配置',
-        pickerOptions: {},
         dialogFormVisible: false,
         formLabelWidth: '120px',
         showData: [],
@@ -152,7 +151,6 @@
       this.getRows();
       this.totalCount = this.showData.length;
       this.title = this.roomNo + this.title;
-      this.pickerOptions = pickerOptions();
     },
     methods: {
       getRows() {

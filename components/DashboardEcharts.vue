@@ -2,7 +2,7 @@
   <div>
     <div class="filter-charts" h>
       <el-date-picker style="margin: 20px" v-model="date" value-format="yyyy-MM-dd" size="small" type="date" placeholder="选择日期"></el-date-picker>
-      <el-radio-group v-model="radio" v-for="item in checkboxItems">
+      <el-radio-group v-model="radio" v-for="item in checkboxItems" v-bind:key="item">
         <el-radio :label="item"></el-radio>
       </el-radio-group>
       <el-button style="margin-left: 50px; margin-bottom: 20px" type="primary" @click="handleSure">确定</el-button>
@@ -17,7 +17,7 @@
 
 <script>
   import echarts from 'echarts'
-  import DashboardPie from '~/components/DashboardPie'
+  import DashboardPie from '../components/DashboardPie'
 
   export default {
     components: {

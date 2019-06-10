@@ -49,8 +49,9 @@
           <el-table-column type="selection"/>
           <el-table-column v-for="item in columns"
                            :prop="item.field"
-                           :label="item.title">
-            <template scope="scope">
+                           :label="item.title"
+                           v-bind:key="item.field">
+            <template slot-scope="scope">
               <div v-if="item.field==='price' || item.field==='rentTime'" v-html="scope.row['rentInfo'][item.field]"></div>
               <div v-else v-html="scope.row[item.field]" style="min-height: 59px"></div>
             </template>
@@ -89,12 +90,14 @@
   import RoomConfigurationDetailPop from '../components/RoomConfigurationDetailPop';
   import AddRoomPop from '../components/AddRoomPop';
   import SetRoomConfigurationsPop from '../components/SetRoomConfigurationsPop';
-  import {pickerOptions} from '../assets/js/default';
   import Axios from 'axios';
+  import rentMixin from '../mixins/rent';
+  import commonMixin from '../mixins/common';
 
   var appData = require('../mock/rent.json');
   var tableHeaders = require('../mock/rentTableHeaders.json')
   export default {
+    mixins: [rentMixin, commonMixin],
     components: {
       RoomOwnerAccountInfoPop,
       RoomConfigurationDetailPop,
@@ -109,7 +112,6 @@
         state2: '',
         value1: '',
         value2: '',
-        pickerOptions: {},
         dialogFormVisible: false,
         showData: [],
         columns: [],
@@ -126,7 +128,6 @@
     mounted() {
       this.columns = this.getHeaders();
       this.showData = this.getRows();
-      this.pickerOptions = pickerOptions();
     },
     methods: {
       getRows() {

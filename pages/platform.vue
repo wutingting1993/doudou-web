@@ -16,7 +16,8 @@
         <el-table-column type="selection"/>
         <el-table-column v-for="item in columns"
                          :prop="item.field"
-                         :label="item.title">
+                         :label="item.title"
+                         v-bind:key="item.field">
         </el-table-column>
       </el-table>
     </div>

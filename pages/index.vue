@@ -53,8 +53,9 @@
         <el-table-column v-for="item in showColumns"
                          :prop="item.field"
                          :label="item.title"
+                         v-bind:key="item.field"
                          fixed="left">
-          <template scope="scope">
+          <template slot-scope="scope">
             <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field].value">
             </div>
             <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]" style="min-height: 59px"></div>
@@ -86,14 +87,15 @@
 </template>
 
 <script>
-  import DashboardEcharts from '@/components/DashboardEcharts'
-  import {pickerOptions} from '@/assets/js/default';
+  import DashboardEcharts from '../components/DashboardEcharts'
+  import CommonMixin from '../mixins/common';
   import Axios from 'axios';
 
-  var rowData = require('@/mock/indexRows.json');
-  var tableHeaders = require('@/mock/indexHeaders.json');
-  var indexAutoComplate = require('@/mock/indexAutoComplate.json');
+  var rowData = require('../mock/indexRows.json');
+  var tableHeaders = require('../mock/indexHeaders.json');
+  var indexAutoComplate = require('../mock/indexAutoComplate.json');
   export default {
+    mixins:[CommonMixin],
     components: {
       DashboardEcharts
     },
@@ -106,7 +108,6 @@
         state2: '',
         value1: '',
         value2: '',
-        pickerOptions: {},
         currentPage: 1,
         pageSize: 7,
         totalCount: 100,
@@ -122,7 +123,6 @@
       // this.tableHeight = window.innerHeight - this.$refs.topictable.$el.offsetTop * 2 - 150;
       this.getHeaders();
       this.getRows();
-      this.pickerOptions = pickerOptions();
       this.totalCount = this.columns.length;
       this.restaurants = this.loadAll();
     }
@@ -160,10 +160,6 @@
       ,
       loadAll() {
         return indexAutoComplate;
-      }
-      ,
-      handleSelect(item) {
-        console.log(item);
       }
       ,
       tableRowClassName({row, rowIndex}) {
@@ -210,7 +206,7 @@
 </script>
 
 <style>
-  @import "../assets/css/default.css";
+  @import "~/assets/css/default.css";
 
   .demo-block-control {
     border-top: 1px solid #eaeefb;

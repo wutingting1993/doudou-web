@@ -3,7 +3,7 @@
     <div class="block" style="padding-bottom: 50px">
       <el-row class="demo-autocomplete">
         <span class="demonstration">名称</span>
-        <el-autocomplete size="small"
+        <el-autocomplete v-model="form.name" size="small"
                          class="inline-input small"
                          placeholder="请输入名称"
                          @select="handleSelect">
@@ -20,7 +20,7 @@
           <el-option label="已废弃" value="3"></el-option>
         </el-select>
         <span class="demonstration">标签</span>
-        <el-autocomplete size="small"
+        <el-autocomplete v-model="form.labels" size="small"
                          class="inline-input"
                          placeholder="请输入内容"
                          @select="handleSelect">
@@ -38,9 +38,10 @@
       <el-table-column v-for="item in columns"
                        :prop="item.field"
                        :label="item.title"
+                       v-bind:key="item.field"
                        fixed="left"
                        :formatter='formatterLabels'>
-        <template scope="scope">
+        <template slot-scope="scope">
           <div v-html="formatterLabels(scope.row, scope.column)"></div>
         </template>
 
@@ -62,8 +63,8 @@
 </template>
 <script lang="ts">
   import Axios from 'axios';
-  import rentMixin from '@/mixins/rent';
-  import commonMixin from '@/mixins/common';
+  import rentMixin from '../mixins/rent';
+  import commonMixin from '../mixins/common';
 
   var appData = require('../mock/RoomConfigurations.json');
   var tableHeaders = require('../mock/RoomConfigurationsHeaders.json');

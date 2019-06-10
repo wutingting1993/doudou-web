@@ -1,6 +1,6 @@
 export default {
   methods: {
-    spanRow(row, column, rowIndex, columnIndex, notSpanRow) {
+    spanRow(row:any, column:any, rowIndex:any, columnIndex:any, notSpanRow:any) {
       if (notSpanRow.indexOf(column.property) === -1) {
         // 用于设置合并开始的行号，rowspan 不为 0，不是第一行时, 则该行需要向下合并
         if (column.rowspan !== 0) {
@@ -16,7 +16,7 @@ export default {
         }
       }
     },
-    payStatus(row, column) {
+    payStatus(row:any, column:any) {
       if (column.property === 'payStatus' && row[column.property]) {
         var status = row[column.property];
         if (status === '已支付') {
@@ -40,7 +40,7 @@ export default {
         return 'white';
       }
     },
-    openDialog(obj) {
+    openDialog(obj:any) {
       obj.$confirm('删除平台, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -58,12 +58,12 @@ export default {
         });
       });
     },
-    formatterLabels(row, col) {
+    formatterLabels(row:any, col:any) {
       if (col.property !== 'labels') {
         return row[col.property];
       }
       var html = "";
-      row.labels.forEach(label => {
+      row.labels.forEach((label:any) => {
         html += "<span class=\"el-tag el-tag--success el-tag--mini el-tag--light\">" + label + " </span>";
       });
 

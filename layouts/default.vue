@@ -22,7 +22,7 @@
 
 <script>
 
-  import Left from '~/components/Left.vue'
+  import Left from '../components/Left.vue'
 
   export default {
     components: {
