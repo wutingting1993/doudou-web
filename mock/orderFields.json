@@ -1,0 +1,62 @@
+[
+  {
+    "field": "roomNo",
+    "title": "房号"
+  },
+  {
+    "field": "type",
+    "title": "房型"
+  },
+  {
+    "field": "orderId",
+    "title": "订单号"
+  },
+  {
+    "field": "orderTime",
+    "title": "订单时间"
+  },
+  {
+    "field": "checkInTime",
+    "title": "入住时间"
+  },
+  {
+    "field": "leaveTime",
+    "title": "退房时间"
+  },
+  {
+    "field": "days",
+    "title": "入住天数"
+  },
+  {
+    "field": "orderName",
+    "title": "预订人"
+  },
+  {
+    "field": "telPhone",
+    "title": "手机号"
+  },
+  {
+    "field": "weChat",
+    "title": "微信"
+  },
+  {
+    "field": "platform",
+    "title": "平台"
+  },
+  {
+    "field": "status",
+    "title": "订单状态"
+  },
+  {
+    "field": "cleanStatus",
+    "title": "房间状态"
+  },
+  {
+    "field": "payStatus",
+    "title": "支付状态"
+  },
+  {
+    "field": "comment",
+    "title": "备注"
+  }
+]

@@ -46,7 +46,6 @@
         border
         show-summary
         :summary-method="getSummaries"
-        :cell-class-name="tableColClassName"
         :span-method="arraySpanMethod"
         class="default-table"
         @cell-click="dialogTableVisible = true">
@@ -60,7 +59,6 @@
             </div>
             <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]" style="min-height: 59px"></div>
             <div v-else @click="dialogTableVisible = true" v-text=" "></div>
-
           </template>
         </el-table-column>
       </el-table>
@@ -162,25 +160,6 @@
         return indexAutoComplate;
       }
       ,
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 0) {
-          return 'warning-row';
-        }
-        return '';
-      }
-      ,
-      tableColClassName({row, column, rowIndex, columnIndex}) {
-        if (columnIndex !== 0 && row[column.property]) {
-          var status = this.showData[rowIndex][column.property].status;
-          if (status === 'leave') {
-            return 'leave-cell';
-          } else if (status === 'check-in') {
-            return 'check-in-cell';
-          }
-          return 'default-cell';
-        }
-      }
-      ,
       arraySpanMethod({row, column, rowIndex, columnIndex}) {
         if (columnIndex !== 0 && row[column.property]) {
           var spanCols = this.showData[rowIndex][column.property].colSpan;
@@ -206,7 +185,7 @@
 </script>
 
 <style>
-  @import "~/assets/css/default.css";
+  @import "../assets/css/default.css";
 
   .demo-block-control {
     border-top: 1px solid #eaeefb;

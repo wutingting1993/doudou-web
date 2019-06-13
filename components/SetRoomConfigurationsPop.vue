@@ -53,8 +53,7 @@
                        :prop="item.field"
                        :label="item.title"
                        v-bind:key="item.field"
-                       fixed="left"
-                       :formatter='formatterLabels'>
+                       fixed="left">
         <template slot-scope="scope">
           <div v-html="formatterLabels(scope.row, scope.column)"></div>
         </template>

@@ -17,8 +17,10 @@
           <span slot="title">Dashboard</span></a>
       </el-menu-item>
       <el-menu-item index="2">
-        <i class="el-icon-document"></i>
-        <span slot="title">订单信息</span>
+        <a href="/order">
+          <i class="el-icon-document"></i>
+          <span slot="title">订单信息</span>
+        </a>
       </el-menu-item>
       <el-menu-item index="3">
         <a href="/platform">

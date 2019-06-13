@@ -1,106 +1,124 @@
 <template>
   <div>
     <div class="container">
-      <el-button-group>
-        <el-button type="primary" icon="el-icon-edit"></el-button>
-        <el-button type="primary" icon="el-icon-share"></el-button>
-        <el-button type="primary" icon="el-icon-delete"></el-button>
-        <el-button type="primary" icon="el-icon-search">搜索</el-button>
-        <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-      </el-button-group>
-      <div style="align-items: center">
-        <el-table
-          :data="tableData"
-          style="width: 100%"
-          :row-class-name="tableRowClassName">
-          <el-table-column
-            prop="date"
-            label="房间号"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="房型"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="订单号">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入住人">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入住时间">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="退房时间">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否续住">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="平台">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="平台金额">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="入账金额">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否离店">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="是否打扫">
-          </el-table-column>
-        </el-table>
+      <div class="block" style="padding-bottom: 50px">
+        <el-row class="demo-autocomplete">
+          <span class="demonstration">订单号</span>
+          <el-autocomplete
+            class="inline-input"
+            size="small"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+
+          <span class="demonstration">入住人</span>
+          <el-autocomplete
+            class="inline-input"
+            size="small"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+
+          <span class="demonstration">电话号码</span>
+          <el-autocomplete
+            class="inline-input"
+            size="small"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+
+          <span class="demonstration">证件号</span>
+          <el-autocomplete
+            class="inline-input"
+            size="small"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect">
+          </el-autocomplete>
+
+          <span class="demonstration">订单状态</span>
+          <el-select placeholder="请选择订单状态" size="small">
+            <el-option label="check in" value="1"></el-option>
+            <el-option label="check out" value="2"></el-option>
+          </el-select>
+
+          <span class="demonstration">入住时间</span>
+          <el-date-picker
+            size="small"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+            clearable
+            :default-time="['00:00:00', '23:59:59']">
+          </el-date-picker>
+
+        </el-row>
+
       </div>
+      <el-table
+        :data="tableData"
+        style="width: 100%">
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item v-for="item in allColumns"
+                            :prop="item.field"
+                            :label="item.title"
+                            v-bind:key="item.field">
+                <span v-text="props.row[item.field]"></span>
+              </el-form-item>
+            </el-form>
+          </template>
+        </el-table-column>
+
+        <el-table-column v-for="item in showColumns"
+                         :prop="item.field"
+                         :label="item.title"
+                         v-bind:key="item.field">
+        </el-table-column>
+      </el-table>
     </div>
   </div>
 </template>
 
 <script>
 
+  import commonMixin from '../mixins/common';
+
+  var rowData = require('../mock/getOrderList.json');
+  var allFields = require('../mock/orderTableHeaders.json');
+  var showFields = require('../mock/orderFields.json');
+  var indexAutoComplate = require('../mock/indexAutoComplate.json');
+
   export default {
-    methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      }
-    },
+    mixins: [commonMixin],
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        searchValues: [],
+        tableData: [],
+        showColumns: [],
+        allColumns: []
+      }
+    }
+    ,
+    mounted() {
+      this.tableData = rowData;
+      this.showColumns = showFields;
+      this.allColumns = allFields;
+      this.searchValues = indexAutoComplate;
+    },
+    methods: {
+      querySearch(queryString, cb) {
+        var restaurants = this.searchValues;
+        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
       }
     }
   }
@@ -108,4 +126,19 @@
 
 <style>
   @import "../assets/css/default.css";
+
+  .demo-table-expand {
+    font-size: 0;
+  }
+
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
 </style>
