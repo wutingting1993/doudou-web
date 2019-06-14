@@ -2,64 +2,7 @@
   <div>
     <div class="container">
       <div class="block" style="padding-bottom: 50px">
-        <el-row class="demo-autocomplete">
-          <span class="demonstration">订单号</span>
-          <el-autocomplete
-            class="inline-input"
-            size="small"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect">
-          </el-autocomplete>
-
-          <span class="demonstration">入住人</span>
-          <el-autocomplete
-            class="inline-input"
-            size="small"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect">
-          </el-autocomplete>
-
-          <span class="demonstration">电话号码</span>
-          <el-autocomplete
-            class="inline-input"
-            size="small"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect">
-          </el-autocomplete>
-
-          <span class="demonstration">证件号</span>
-          <el-autocomplete
-            class="inline-input"
-            size="small"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect">
-          </el-autocomplete>
-
-          <span class="demonstration">订单状态</span>
-          <el-select placeholder="请选择订单状态" size="small">
-            <el-option label="check in" value="1"></el-option>
-            <el-option label="check out" value="2"></el-option>
-          </el-select>
-
-          <span class="demonstration">入住时间</span>
-          <el-date-picker
-            size="small"
-            type="daterange"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-            clearable
-            :default-time="['00:00:00', '23:59:59']">
-          </el-date-picker>
-
-        </el-row>
-
+        <search/>
       </div>
       <el-table
         :data="tableData"
@@ -90,6 +33,7 @@
 <script>
 
   import commonMixin from '../mixins/common';
+  import Search from '../components/Search';
 
   var rowData = require('../mock/getOrderList.json');
   var allFields = require('../mock/orderTableHeaders.json');
@@ -98,12 +42,16 @@
 
   export default {
     mixins: [commonMixin],
+    components: {Search},
     data() {
       return {
         searchValues: [],
         tableData: [],
         showColumns: [],
-        allColumns: []
+        allColumns: [],
+        form: {
+          name: null
+        }
       }
     }
     ,
@@ -126,19 +74,4 @@
 
 <style>
   @import "../assets/css/default.css";
-
-  .demo-table-expand {
-    font-size: 0;
-  }
-
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
 </style>
