@@ -20,7 +20,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-for="item in showColumns"
+        <el-table-column v-for="item in firstColumn"
                          :prop="item.field"
                          :label="item.title"
                          v-bind:key="item.field">
@@ -47,7 +47,7 @@
       return {
         searchValues: [],
         tableData: [],
-        showColumns: [],
+        firstColumn: [],
         allColumns: [],
         form: {
           name: null
@@ -57,7 +57,7 @@
     ,
     mounted() {
       this.tableData = rowData;
-      this.showColumns = showFields;
+      this.firstColumn = showFields;
       this.allColumns = allFields;
       this.searchValues = indexAutoComplate;
     },

@@ -13,6 +13,10 @@
       active-text-color="#ffd04b"
       class="el-menu-vertical-demo">
       <el-menu-item index="1">
+        <a href="/RoomState"><i class="el-icon-menu"></i>
+          <span slot="title">房态</span></a>
+      </el-menu-item>
+      <el-menu-item index="1">
         <a href="/"><i class="el-icon-menu"></i>
           <span slot="title">Dashboard</span></a>
       </el-menu-item>

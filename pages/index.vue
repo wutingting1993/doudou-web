@@ -1,86 +1,6 @@
 <template>
   <div>
-    <!--<el-button-group>-->
-    <!--<el-button type="primary">上传<i class="el-icon-upload el-icon&#45;&#45;right"></i></el-button>-->
-    <!--<el-button type="primary" icon="el-icon-edit">编辑</el-button>-->
-    <!--<el-button type="danger" icon="el-icon-delete">删除</el-button>-->
-    <!--<el-button type="primary" icon="el-icon-search">搜索</el-button>-->
-    <!--</el-button-group>-->
-    <!--<br/>-->
-    <!--<el-button-group>-->
-    <!--<el-button type="primary">上传<i class="el-icon-upload el-icon&#45;&#45;right"></i></el-button>-->
-    <!--<el-button type="primary" icon="el-icon-edit">编辑</el-button>-->
-    <!--<el-button type="danger" icon="el-icon-delete">删除</el-button>-->
-    <!--</el-button-group>-->
-    <div class="container">
-      <!--:header-cell-style=""-->
-      <div class="block" style="padding-bottom: 50px">
-        <el-row class="demo-autocomplete">
-          <span class="demonstration">入住人</span>
-          <el-autocomplete
-            class="inline-input"
-            v-model="state1"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入内容"
-            @select="handleSelect"
-          ></el-autocomplete>
-          <span class="demonstration">入住时间</span>
-          <el-date-picker
-            v-model="value2"
-            type="daterange"
-            unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"
-            clearable
-            :default-time="['00:00:00', '23:59:59']">
-          </el-date-picker>
-        </el-row>
-
-      </div>
-      <el-table
-        :data="showData"
-        ref="topictable"
-        :height="tableHeight"
-        border
-        show-summary
-        :summary-method="getSummaries"
-        :span-method="arraySpanMethod"
-        class="default-table"
-        @cell-click="dialogTableVisible = true">
-        <el-table-column v-for="item in showColumns"
-                         :prop="item.field"
-                         :label="item.title"
-                         v-bind:key="item.field"
-                         fixed="left">
-          <template slot-scope="scope">
-            <div v-if="item.field !== 'type' && scope.row[item.field]" @click="dialogTableVisible = true" v-html="scope.row[item.field].value">
-            </div>
-            <div v-else-if="item.field === 'type'" v-html="scope.row[item.field]" style="min-height: 59px"></div>
-            <div v-else @click="dialogTableVisible = true" v-text=" "></div>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-dialog title="房间信息" :visible.sync="dialogTableVisible">
-        <el-table title="房间信息">
-
-        </el-table>
-      </el-dialog>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :hide-on-single-page="true"
-        :total="totalCount"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        align="right">
-      </el-pagination>
-    </div>
-    <div>
-      <dashboard-echarts/>
-    </div>
+    <dashboard-echarts/>
   </div>
 </template>
 
@@ -89,8 +9,8 @@
   import CommonMixin from '../mixins/common';
   import Axios from 'axios';
 
-  var rowData = require('../mock/indexRows.json');
-  var tableHeaders = require('../mock/indexHeaders.json');
+  var rowData = require('../mock/RoomStateRows.json');
+  var tableHeaders = require('../mock/RoomStateHeaders.json');
   var indexAutoComplate = require('../mock/indexAutoComplate.json');
   export default {
     mixins:[CommonMixin],
@@ -113,7 +33,7 @@
         dialogTableVisible: false,
         showData: [],
         columns: [],
-        showColumns: []
+        firstColumn: []
       }
     }
     ,
@@ -137,7 +57,7 @@
       getHeaders() {
         Axios.get('/rent-header').then((response) => {
           this.columns = tableHeaders;
-          this.showColumns = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
+          this.firstColumn = [{field: 'type', title: '房型'}].concat(this.columns.splice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage));
         }).catch((error) => {
           console.log(error)
           this.columns = [];
@@ -160,9 +80,9 @@
         return indexAutoComplate;
       }
       ,
-      arraySpanMethod({row, column, rowIndex, columnIndex}) {
+      roomStateTableSpan({row, column, rowIndex, columnIndex}) {
         if (columnIndex !== 0 && row[column.property]) {
-          var spanCols = this.showData[rowIndex][column.property].colSpan;
+          var spanCols = this.showData[rowIndex][column.property].rowSpan;
           if (spanCols > 1) {
             return [1, spanCols];
           }
@@ -170,7 +90,7 @@
       },
       getSummaries(param) {
         const sums = []
-        this.showColumns.forEach((column, index) => {
+        this.firstColumn.forEach((column, index) => {
           if (index === 0) {
             sums[index] = '总价';
             return;

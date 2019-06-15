@@ -152,7 +152,7 @@
         cb(results);
       }
       ,
-      arraySpanMethod({row, column, rowIndex, columnIndex}) {
+      roomStateTableSpan({row, column, rowIndex, columnIndex}) {
         if (['rentTime', 'price'].indexOf(column.property) === -1) {
           // 用于设置合并开始的行号，rowspan 不为 0，不是第一行时, 则该行需要向下合并
           if (column.rowspan !== 0) {
