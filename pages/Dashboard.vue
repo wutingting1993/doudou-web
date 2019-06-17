@@ -91,11 +91,11 @@
       getSummaries(param) {
         const sums = []
         this.firstColumn.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '总价';
+          if (Dashboard === 0) {
+            sums[Dashboard] = '总价';
             return;
           }
-          sums[index] = 1000 + index + ' 元';
+          sums[Dashboard] = 1000 + Dashboard + ' 元';
         });
 
         return sums;

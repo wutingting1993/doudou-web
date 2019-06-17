@@ -1,0 +1,91 @@
+[
+  {
+    "title": "房态",
+    "icon": "el-icon-s-home",
+    "url": "/RoomState",
+    "submenus": [
+    ]
+  },
+  {
+    "title": "DashBoard",
+    "icon": "el-icon-menu",
+    "url": "/DashBoard",
+    "submenus": [
+    ]
+  },
+  {
+    "title": "订单信息",
+    "icon": "el-icon-document",
+    "url": "Order",
+    "submenus": [
+      {
+        "title": "全部",
+        "url": "/Order/All"
+      },
+      {
+        "title": "待分房",
+        "url": "/Order/Todo "
+      },
+      {
+        "title": "待入住",
+        "url": "/Order/CheckIn"
+      },
+      {
+        "title": "已入住",
+        "url": "/Order/Checked"
+      },
+      {
+        "title": "待离店",
+        "url": "/Order/Leave"
+      }
+    ]
+  },
+  {
+    "title": "平台管理",
+    "icon": "el-icon-s-home",
+    "url": "/Platform",
+    "submenus": [
+    ]
+  },
+  {
+    "title": "房源管理",
+    "icon": "el-icon-s-home",
+    "url": "/Houses",
+    "submenus": [
+    ]
+  },
+  {
+    "title": "采购管理",
+    "icon": "el-icon-goods",
+    "url": "Purchase",
+    "submenus": [
+      {
+        "title": "全部",
+        "url": "/Purchase/All"
+      },
+      {
+        "title": "待采购",
+        "url": "/Purchase/Todo"
+      },
+      {
+        "title": "已采购",
+        "url": "/Purchase/Done"
+      }
+    ]
+  },
+  {
+    "title": "维修管理",
+    "icon": "el-icon-setting",
+    "url": "Maintenance",
+    "submenus": [
+      {
+        "title": "待维修",
+        "url": "/Maintenance/Todo"
+      },
+      {
+        "title": "待采购",
+        "url": "/Maintenance/Done"
+      }
+    ]
+  }
+]

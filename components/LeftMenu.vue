@@ -4,51 +4,34 @@
     @mouseenter.native="collapseOpen"
     @mouseleave.native="collapseClose">
     <el-menu
-      default-active="1"
+      :default-active="activeUrl"
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
+      unique-opened
+      router
       class="el-menu-vertical-demo">
-      <el-menu-item index="1">
-        <a href="/RoomState"><i class="el-icon-menu"></i>
-          <span slot="title">房态</span></a>
-      </el-menu-item>
-      <el-menu-item index="1">
-        <a href="/"><i class="el-icon-menu"></i>
-          <span slot="title">Dashboard</span></a>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <a href="/order">
-          <i class="el-icon-document"></i>
-          <span slot="title">订单信息</span>
-        </a>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <a href="/platform">
-          <i class="el-icon-setting"></i>
-          <span slot="title">平台管理</span>
-        </a>
-      </el-menu-item>
-      <el-submenu index="4">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>房源管理</span>
-        </template>
-        <el-menu-item index="3">
-          <a href="/rent">
-            <span slot="title">房源管理</span>
-          </a>
+      <template v-for="menu in menus">
+        <el-menu-item v-if="menu.submenus==='undefined' || menu.submenus.length === 0" :index="menu.url">
+          <i :class="menu.icon"></i>
+          <span slot="title">{{menu.title}}</span>
         </el-menu-item>
-        <el-menu-item index="4-3">资产管理</el-menu-item>
-        <el-submenu index="4-4">
-          <template slot="title">采购管理</template>
-          <el-menu-item index="4-4-1">选项1</el-menu-item>
+        <el-submenu v-else :index="menu.url">
+          <template slot="title">
+            <i :class="menu.icon"></i>
+            <span>{{menu.title}}</span>
+          </template>
+          <div v-for="submenu in menu.submenus">
+            <el-menu-item :index="submenu.url">
+              <i :class="submenu.icon"></i>
+              <span slot="title">{{submenu.title}}</span>
+            </el-menu-item>
+          </div>
         </el-submenu>
-        <el-menu-item index="4-5">安装管理</el-menu-item>
-      </el-submenu>
+      </template>
     </el-menu>
   </el-aside>
 </template>
@@ -58,9 +41,14 @@
     data() {
       return {
         collapseBtnClick: false,
-        isCollapse: true,
-        aaa: 111
+        isCollapse: false,
+        menus: [],
+        activeUrl: null
       };
+    },
+    mounted() {
+      this.menus = require('../mock/LeftMenu.json');
+      this.activeUrl = this.menus[0].url;
     },
     methods: {
       handleOpen(key, keyPath) {

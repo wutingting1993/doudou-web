@@ -43,7 +43,7 @@
         <el-table :data="showData"
                   ref="platformTable"
                   border
-                  :span-method="arraySpanMethod"
+                  :span-method="roomStateTableSpan"
                   :cell-class-name="payStatus"
                   @selection-change="handleSelectionChange">
           <el-table-column type="selection"/>

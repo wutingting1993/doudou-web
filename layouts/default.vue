@@ -5,7 +5,7 @@
 
       </el-header>
       <el-container>
-        <left/>
+        <left-menu/>
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 0 0 50px 50px">
             <el-breadcrumb-item :to="{ path: '/' }">套房信息</el-breadcrumb-item>
@@ -22,11 +22,11 @@
 
 <script>
 
-  import Left from '../components/Left.vue'
+  import LeftMenu from '../components/LeftMenu.vue'
 
   export default {
     components: {
-      Left
+      LeftMenu
     }, methods: {
       collapseStatus() {
         this.isCollapse = !this.isCollapse;
