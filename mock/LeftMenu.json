@@ -8,7 +8,7 @@
   },
   {
     "title": "DashBoard",
-    "icon": "el-icon-menu",
+    "icon": "el-icon-s-data",
     "url": "/DashBoard",
     "submenus": [
     ]
@@ -20,29 +20,29 @@
     "submenus": [
       {
         "title": "全部",
-        "url": "/Order/All"
+        "url": "/Order?status=All"
       },
       {
         "title": "待分房",
-        "url": "/Order/Todo "
+        "url": "/Order?status=Todo "
       },
       {
         "title": "待入住",
-        "url": "/Order/CheckIn"
+        "url": "/Order?status=CheckIn"
       },
       {
         "title": "已入住",
-        "url": "/Order/Checked"
+        "url": "/Order?status=Checked"
       },
       {
         "title": "待离店",
-        "url": "/Order/Leave"
+        "url": "/Order?status=Leave"
       }
     ]
   },
   {
     "title": "平台管理",
-    "icon": "el-icon-s-home",
+    "icon": "el-icon-coordinate",
     "url": "/Platform",
     "submenus": [
     ]
@@ -61,15 +61,15 @@
     "submenus": [
       {
         "title": "全部",
-        "url": "/Purchase/All"
+        "url": "/Purchase?status=All"
       },
       {
         "title": "待采购",
-        "url": "/Purchase/Todo"
+        "url": "/Purchase?status=Todo"
       },
       {
-        "title": "已采购",
-        "url": "/Purchase/Done"
+        "title": "库存",
+        "url": "/Purchase?status=Done"
       }
     ]
   },
@@ -80,11 +80,45 @@
     "submenus": [
       {
         "title": "待维修",
-        "url": "/Maintenance/Todo"
+        "url": "/Maintenance?status=Todo"
       },
       {
-        "title": "待采购",
-        "url": "/Maintenance/Done"
+        "title": "历史",
+        "url": "/Maintenance?status=Done"
+      }
+    ]
+  },
+  {
+    "title": "收入支出",
+    "icon": "el-icon-money",
+    "url": "Staff",
+    "submenus": [
+      {
+        "title": "收支汇总",
+        "url": "/books/PaymentSummary"
+      },
+      {
+        "title": "刷单支出",
+        "url": "/books/BrushOrder"
+      }
+    ]
+  },
+  {
+    "title": "员工管理",
+    "icon": "el-icon-user-solid",
+    "url": "Staff",
+    "submenus": [
+      {
+        "title": "员工管理",
+        "url": "/Staff/Staff"
+      },
+      {
+        "title": "考勤管理",
+        "url": "/Staff/Attendance"
+      },
+      {
+        "title": "薪资结算",
+        "url": "/Staff/Salary"
       }
     ]
   }

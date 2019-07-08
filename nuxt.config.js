@@ -63,6 +63,6 @@ module.exports = {
   },
   server: {
     port: 8000, // default: 3000
-    host: 'localhost', // default: localhost
+    host: 'local.quhuhu.com', // default: localhost
   }
 }
