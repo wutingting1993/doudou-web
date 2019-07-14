@@ -1,0 +1,54 @@
+[
+  {
+    "field": "name",
+    "title": "姓名"
+  },
+  {
+    "field": "id",
+    "title": "编号"
+  },
+  {
+    "field": "sexTypeName",
+    "title": "性别"
+  },
+  {
+    "field": "telphone",
+    "title": "电话"
+  },
+  {
+    "field": "wechat",
+    "title": "微信"
+  },
+  {
+    "field": "idCard",
+    "title": "身份证"
+  },
+  {
+    "field": "position",
+    "title": "职位"
+  },
+  {
+    "field": "baseSalaryPerMonth",
+    "title": "基本工资/月"
+  },
+  {
+    "field": "regDate",
+    "title": "注册时间"
+  },
+  {
+    "field": "vacationPerSalary",
+    "title": "休假/天"
+  },
+  {
+    "field": "modDate",
+    "title": "修改时间"
+  },
+  {
+    "field": "absenteeismPerSalary",
+    "title": "缺席/天"
+  },
+  {
+    "field": "description",
+    "title": "备注"
+  }
+]

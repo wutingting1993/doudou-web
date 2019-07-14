@@ -103,16 +103,16 @@
       },
       addPlatform() {
         Axios.post("http://localhost:8080/platforms", this.form).then((response) => {
-          if (response.status === 201) {
-            commonMixin.methods.successMessage(this);
-            this.getPlatforms();
-          }
+          this.dialogFormVisible = false;
+          commonMixin.methods.successMessage(this);
+          this.getPlatforms();
         }).catch((error) => {
           commonMixin.methods.showErrorDialog(this, error);
         });
       },
       updatePlatform: function () {
         Axios.patch("http://localhost:8080/platforms/" + this.multipleSelection[0].id, this.form).then((response) => {
+          this.dialogFormVisible = false;
           commonMixin.methods.successMessage(this);
           this.getPlatforms();
         }).catch((error) => {
@@ -120,7 +120,6 @@
         });
       },
       savePlatform() {
-        this.dialogFormVisible = false;
         if (this.modelTitle === '新增平台') {
           this.addPlatform();
         } else {
@@ -133,7 +132,7 @@
       },
       deletePlatform() {
         commonMixin.methods.showConfirmDialog(this, '删除平台【' + this.multipleSelection[0].name + '】是否继续?').then(() => {
-            Axios.delete("http://localhost:8080/platforms/" + deleteRow.id).then((response) => {
+            Axios.delete("http://localhost:8080/platforms/" + this.multipleSelection[0].id).then((response) => {
               commonMixin.methods.successMessage(this);
               this.getPlatforms();
             }).catch((error) => {
