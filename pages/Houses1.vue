@@ -40,19 +40,31 @@
         </el-row>
       </div>
       <div class="container">
-        <el-table :data="showData"
-                  ref="platformTable"
-                  border
-                  :span-method="roomStateTableSpan"
+        <!--                  :span-method="roomStateTableSpan"-->
+        <el-table :data="roomList"
+                  ref="roomTable"
                   :cell-class-name="payStatus"
                   @selection-change="handleSelectionChange">
           <el-table-column type="selection"/>
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item v-for="item in roomFields"
+                              :prop="item.field"
+                              :label="item.title"
+                              v-bind:key="item.field">
+                  <span v-text="props.row[item.field]"></span>
+                </el-form-item>
+              </el-form>
+            </template>
+          </el-table-column>
           <el-table-column v-for="item in columns"
                            :prop="item.field"
                            :label="item.title"
                            v-bind:key="item.field">
             <template slot-scope="scope">
-              <div v-if="item.field==='price' || item.field==='rentTime'" v-html="scope.row['rentInfo'][item.field]"></div>
+              <div v-if="item.field==='rentPrice' || item.field==='rentTime'"
+                   v-html="scope.row['rentInfos'][item.field]"></div>
               <div v-else v-html="scope.row[item.field]" style="min-height: 59px"></div>
             </template>
           </el-table-column>
@@ -93,8 +105,9 @@
   import rentMixin from '../mixins/rent';
   import commonMixin from '../mixins/common';
 
-  var appData = require('../mock/rent.json');
-  var tableHeaders = require('../mock/roomTableHeaders.json')
+  const roomFields = require('../mock/roomFields.json');
+  const appData = require('../mock/rent.json');
+  const tableHeaders = require('../mock/roomTableHeaders.json')
   export default {
     mixins: [rentMixin, commonMixin],
     components: {
@@ -105,20 +118,22 @@
     },
     data() {
       return {
+        dialogFormVisible: false,
+        roomFields: [],
+        roomList: [],
+        columns: [],
+        multipleSelection: [],
+        deleteFlag: false,
         currentRoomNo: '6-2801',
         restaurants: [],
         state1: '',
         state2: '',
         value1: '',
         value2: '',
-        dialogFormVisible: false,
-        showData: [],
-        columns: [],
-        multipleSelection: [],
         formLabelWidth: '120px',
         form: {
-          platformName: '',
-          comment: '',
+          roomName: '',
+          description: '',
           type: ''
         }
       }
@@ -126,9 +141,83 @@
 
     mounted() {
       this.columns = tableHeaders;
-      this.showData = appData;
+      this.roomFields = roomFields;
+      this.getRooms();
+      debugger
     },
     methods: {
+      getRooms() {
+        Axios.get("http://localhost:8080/rooms").then((response) => {
+          this.roomList = response.data.content;
+        }).catch((error) => {
+          this.roomList = [];
+          console.log(error)
+        });
+      },
+      showEditDialog() {
+        this.dialogFormVisible = true;
+        this.modelTitle = '编辑平台';
+        Axios.get("http://localhost:8080/rooms/" + this.multipleSelection[0].id).then((response) => {
+          this.form = response.data.content;
+        }).catch((error) => {
+          commonMixin.methods.showErrorDialog(this, error);
+        });
+      },
+      showAddDialog() {
+        this.dialogFormVisible = true;
+        this.modelTitle = '新增平台';
+        this.form = {};
+      },
+      addRooms() {
+        Axios.post("http://localhost:8080/rooms", this.form).then((response) => {
+          this.dialogFormVisible = false;
+          commonMixin.methods.successMessage(this);
+          this.getRooms();
+        }).catch((error) => {
+          commonMixin.methods.showErrorDialog(this, error);
+        });
+      },
+      updateRooms: function () {
+        Axios.patch("http://localhost:8080/rooms/" + this.multipleSelection[0].id, this.form).then((response) => {
+          this.dialogFormVisible = false;
+          commonMixin.methods.successMessage(this);
+          this.getRooms();
+        }).catch((error) => {
+          commonMixin.methods.showErrorDialog(this, error);
+        });
+      },
+      saveRooms() {
+        if (this.modelTitle === '新增平台') {
+          this.addRooms();
+        } else {
+          this.updateRooms();
+        }
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+        this.deleteFlag = val.length !== 1;
+      },
+      deleteRooms() {
+        commonMixin.methods.showConfirmDialog(this, '删除房源【' + this.multipleSelection[0].name + '】是否继续?').then(() => {
+            Axios.delete("http://localhost:8080/rooms/" + this.multipleSelection[0].id).then((response) => {
+              commonMixin.methods.successMessage(this);
+              this.getRooms();
+            }).catch((error) => {
+              commonMixin.methods.showErrorDialog(this, error);
+            });
+          }
+        ).catch(() => {
+          commonMixin.methods.cancelMessage(this);
+        });
+      },
+      getRows() {
+        Axios.get('/rent-data').then((response) => {
+          this.showData = appData;
+        }).catch((error) => {
+          this.showData = [];
+          console.log(error)
+        });
+      },
       querySearch(queryString, cb) {
         var restaurants = this.restaurants;
         var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
@@ -137,7 +226,7 @@
       }
       ,
       roomStateTableSpan({row, column, rowIndex, columnIndex}) {
-        if (['rentTime', 'price'].indexOf(column.property) === -1) {
+        if (['rentTime', 'rentPrice'].indexOf(column.property) === -1) {
           // 用于设置合并开始的行号，rowspan 不为 0，不是第一行时, 则该行需要向下合并
           if (column.rowspan !== 0) {
             return {
@@ -159,9 +248,6 @@
           type: 'success'
         });
         return this.roomDialogTableVisible;
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
       }, openAccountDialog() {
         this.$refs['account-dialog'].open();
       }, openRoomDialog() {

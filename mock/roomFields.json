@@ -12,28 +12,20 @@
     "title": "房东"
   },
   {
-    "field": "ownerPhone",
+    "field": "ownerTel",
     "title": "房东电话"
   },
   {
-    "field": "contact",
+    "field": "contactUser",
     "title": "联系人"
   },
   {
-    "field": "contactPhone",
+    "field": "contactTel",
     "title": "联系人电话"
   },
   {
     "field": "rentTime",
     "title": "租期"
-  },
-  {
-    "field": "price",
-    "title": "租金/月"
-  },
-  {
-    "field": "deposit",
-    "title": "押金"
   },
   {
     "field": "payWay",
@@ -42,9 +34,5 @@
   {
     "field": "payStatus",
     "title": "支付状态"
-  },
-  {
-    "field": "comment",
-    "title": "备注"
   }
 ]

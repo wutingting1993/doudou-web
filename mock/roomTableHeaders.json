@@ -1,0 +1,38 @@
+[
+  {
+    "field": "roomNo",
+    "title": "房号"
+  },
+  {
+    "field": "type",
+    "title": "房型"
+  },
+  {
+    "field": "owner",
+    "title": "房东"
+  },
+  {
+    "field": "ownerTel",
+    "title": "房东电话"
+  },
+  {
+    "field": "contactUser",
+    "title": "联系人"
+  },
+  {
+    "field": "contactTel",
+    "title": "联系人电话"
+  },
+  {
+    "field": "rentTime",
+    "title": "租期"
+  },
+  {
+    "field": "payWay",
+    "title": "支付周期"
+  },
+  {
+    "field": "payStatus",
+    "title": "支付状态"
+  }
+]
