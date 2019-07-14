@@ -32,6 +32,33 @@ export default {
           }
         }]
       }
+    },
+    showErrorDialog(_this: any, error: any) {
+      _this.$alert(error.response.data.message, '提示', {
+        showCancelButton: false,
+        confirmButtonText: '确定',
+        type: 'error',
+        center: true
+      })
+    },
+    showConfirmDialog(_this: any, message: any) {
+      return _this.$confirm(message, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+    },
+    cancelMessage(_this: any) {
+      return _this.$message({
+        type: 'info',
+        message: '操作已取消'
+      })
+    },
+    successMessage(_this: any) {
+      return _this.$message({
+        type: 'success',
+        message: '操作成功'
+      })
     }
   }
 }
